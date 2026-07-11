@@ -14,7 +14,7 @@ Single-page marketing site for Evara Dental Clinic, run by Dr. Kshitija P Pervi,
 
 ## Brand Personality
 
-Warm, precise, reassuring. The physical brand is the reference: backlit gold logo on a cream fascia, dark walnut pillar, bilingual Marathi + English signage, soft teal chairs inside. The site should feel like standing in front of that glowing storefront at dusk.
+Serene, precise, spa-like. The design is an exact replication of a client-approved "Lumina Dental" reference comp: warm ivory page (#F9F6F1), beige bands (#EAE2D4), white cards with hairline borders, deep forest green (#1E4438) for buttons/icons/stars, Lora headings with Inter body. Layout, colors and section grammar follow the reference; only the clinic's information is Evara's.
 
 ## Anti-references
 

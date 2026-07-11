@@ -3,9 +3,9 @@
 
 document.body.classList.add('js');
 
-/* ---------- header state ---------- */
+/* ---------- header hairline on scroll ---------- */
 const header = document.getElementById('siteHeader');
-const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -39,7 +39,7 @@ const spy = new IntersectionObserver((entries) => {
 
 sections.forEach((s) => spy.observe(s));
 
-/* ---------- scroll reveals ---------- */
+/* ---------- subtle section reveals ---------- */
 const revealer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
@@ -47,10 +47,12 @@ const revealer = new IntersectionObserver((entries) => {
       revealer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+}, { threshold: 0.1 });
 
-document.querySelectorAll('.reveal').forEach((el, i) => {
-  el.style.transitionDelay = `${(i % 4) * 70}ms`;
+document.querySelectorAll(
+  '.split-copy, .split-media, .dentist-card, .treatment-card, .feature, .story-card, .contact-copy, .appointment-card'
+).forEach((el) => {
+  el.classList.add('reveal');
   revealer.observe(el);
 });
 
@@ -65,7 +67,7 @@ setTimeout(() => {
 /* ---------- doctor photo fallback ---------- */
 // Shows the monogram until images/dr-kshitija.jpg exists.
 const doctorPhoto = document.getElementById('doctorPhoto');
-const doctorPortrait = doctorPhoto.closest('.doctor-portrait');
+const doctorPortrait = document.getElementById('doctorPortrait');
 doctorPhoto.addEventListener('error', () => {
   doctorPhoto.classList.add('missing');
   doctorPortrait.classList.add('no-photo');
@@ -85,9 +87,8 @@ form.addEventListener('submit', (e) => {
 
   const name = form.name.value.trim();
   const phone = form.phone.value.trim();
-  const treatment = form.treatment.value;
-  const time = form.time.value.trim();
-  const message = form.message.value.trim();
+  const service = form.service.value;
+  const date = form.date.value;
 
   if (!name || !phone) {
     formError.hidden = false;
@@ -97,14 +98,13 @@ form.addEventListener('submit', (e) => {
   formError.hidden = true;
 
   const lines = [
-    'Hello Evara Dental Clinic, I would like to book an appointment.',
+    'Hello Evara Dental Clinic, I would like to request an appointment.',
     '',
     `Name: ${name}`,
     `Phone: ${phone}`,
-    `Treatment: ${treatment}`,
   ];
-  if (time) lines.push(`Preferred time: ${time}`);
-  if (message) lines.push(`Note: ${message}`);
+  if (service) lines.push(`Service: ${service}`);
+  if (date) lines.push(`Preferred date: ${date}`);
 
   const url = `https://wa.me/${CLINIC_WHATSAPP}?text=${encodeURIComponent(lines.join('\n'))}`;
   window.open(url, '_blank', 'noopener');
