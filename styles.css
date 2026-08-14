@@ -432,16 +432,18 @@ p { max-width: 66ch; text-wrap: pretty; }
 .hero--video .container { position: relative; z-index: 1; width: 100%; }
 .hero--video .hero-copy { max-width: 40rem; }
 
+/* Compact hero copy: the background video is the focus, so the headline is
+   sized down from the display step and the supporting line stays to one row. */
 .hero-copy h1 {
-  font-size: var(--text-3xl);
-  letter-spacing: -0.02em;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.015em;
   color: var(--white);
 }
 .hero--video .hero-copy p {
-  margin-top: 1.4rem;
+  margin-top: 1rem;
   font-size: var(--text-md);
-  max-width: 42ch;
-  color: rgba(255, 255, 255, 0.9);
+  max-width: 40ch;
+  color: rgba(255, 255, 255, 0.92);
 }
 .hero-actions {
   display: flex;
@@ -505,6 +507,186 @@ p { max-width: 66ch; text-wrap: pretty; }
 .philosophy h2 { margin-bottom: 1.1rem; }
 .philosophy p + p { margin-top: 0.9rem; }
 .philosophy .arrow-link { margin-top: 1.6rem; }
+
+/* ==========================================================================
+   Smile Journey — five-step timeline
+   Built to the requested spec (badges, filling connector, staggered reveal,
+   pulsing icons, vertical on mobile) but in the site's warm palette rather
+   than a template blue, so it reads as part of the same brand.
+   ========================================================================== */
+.journey {
+  position: relative;
+  padding-block: var(--space-section);
+  background: var(--white);
+  overflow: hidden;   /* contain the blurred orbs */
+}
+
+/* Soft blurred background circles for depth (decorative). */
+.journey-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.journey-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+}
+.journey-orb--a {
+  width: 26rem; height: 26rem;
+  top: -8rem; left: -6rem;
+  background: radial-gradient(circle, rgba(143, 186, 182, 0.5), transparent 70%);
+}
+.journey-orb--b {
+  width: 30rem; height: 30rem;
+  bottom: -12rem; right: -8rem;
+  background: radial-gradient(circle, rgba(234, 228, 218, 0.7), transparent 70%);
+}
+.journey .container { position: relative; z-index: 1; }
+
+.journey-track { position: relative; }
+
+/* Connector rail + gradient fill. On desktop it runs horizontally through the
+   badge row; JS sets --p (0 to 1) on .journey-track as steps reveal. */
+.journey-line {
+  position: absolute;
+  top: 1.6rem;                 /* badge centre (3.2rem badge) */
+  left: 10%;                   /* first badge centre in a 5-column grid */
+  right: 10%;                  /* last badge centre */
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.journey-line-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--sage), var(--sage-ink));
+  transform: scaleX(var(--p, 0));
+  transform-origin: left center;
+  transition: transform 600ms var(--ease-out-quart);
+}
+
+.journey-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.journey-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+/* Circular numbered badge sits on the connector. */
+.journey-badge {
+  position: relative;
+  z-index: 1;
+  width: 3.2rem;
+  height: 3.2rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  box-shadow: 0 0 0 6px var(--white);   /* mask the rail behind the badge */
+}
+
+.journey-card {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.6rem 1.35rem;
+  box-shadow: 0 10px 30px rgba(34, 40, 39, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  transition: transform var(--dur-layout) var(--ease-out-quart),
+              box-shadow var(--dur-layout) var(--ease-out-quart);
+}
+.journey-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(34, 40, 39, 0.1);
+}
+
+/* Small icon chip above the title. */
+.journey-icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--beige);
+  color: var(--sage-ink);
+  margin-bottom: 0.2rem;
+}
+.journey-icon svg { width: 1.5rem; height: 1.5rem; }
+.journey-card h3 { font-size: var(--text-lg); }
+.journey-card p { font-size: var(--text-sm); color: var(--gray); }
+
+/* --- Tablet: keep it horizontal, tighten spacing --- */
+@media (max-width: 900px) {
+  .journey-steps { gap: 0.75rem; }
+  .journey-card { padding: 1.25rem 1rem; }
+  .journey-line { left: 10%; right: 10%; }
+}
+
+/* --- Mobile: vertical timeline with a left-side connector --- */
+@media (max-width: 620px) {
+  .journey-steps { grid-template-columns: 1fr; gap: 1.5rem; }
+  .journey-step {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1.1rem;
+  }
+  .journey-card { align-items: flex-start; }
+  .journey-icon { margin-bottom: 0; }
+  /* Rail becomes vertical, pinned to the badge column. */
+  .journey-line {
+    top: 1.6rem;
+    bottom: 1.6rem;
+    left: 1.6rem;
+    right: auto;
+    width: 3px;
+    height: auto;
+  }
+  .journey-line-fill {
+    transform: scaleY(var(--p, 0));
+    transform-origin: top center;
+  }
+}
+
+/* Entrance + idle motion. Steps are visible by default (blank-proof); the
+   observer adds `.in` to play the staggered fade-up. Icons pulse gently. */
+@media (prefers-reduced-motion: no-preference) {
+  body.js .journey-step.in {
+    animation: journey-in 500ms var(--ease-out-quart) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+  .journey-icon svg {
+    animation: icon-pulse 4.5s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 300ms);
+  }
+}
+@keyframes journey-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes icon-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.09); }
+}
 
 /* ==========================================================================
    Lead dentist
@@ -1128,4 +1310,9 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
   }
   .btn:hover, .btn:active, .fab:hover, .service-card:hover,
   .gallery-item:hover img { transform: none; }
+
+  /* Timeline: the connector fills instantly and the cards do not lift.
+     (journey-in and icon-pulse are already off, being no-preference only.) */
+  .journey-line-fill { transition: none; }
+  .journey-card:hover { transform: none; }
 }

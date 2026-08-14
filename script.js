@@ -128,6 +128,39 @@ safely('scrollspy', () => {
   sections.forEach((s) => spy.observe(s));
 });
 
+/* ---------- Smile Journey timeline ----------
+   Reveals each step once as it enters the viewport (staggered via CSS --i)
+   and grows the connector fill from 0 to 1 as steps appear. Cards are visible
+   by default, so if the observer never runs the section still reads fine. */
+safely('journey', () => {
+  const track = document.querySelector('.journey-track');
+  if (!track) return;
+  const steps = [...track.querySelectorAll('.journey-step')];
+  if (!steps.length) return;
+
+  const total = steps.length;
+  let revealed = 0;
+
+  // No observer support: show everything and fill the rail.
+  if (!('IntersectionObserver' in window)) {
+    steps.forEach((s) => s.classList.add('in'));
+    track.style.setProperty('--p', '1');
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);            // play once
+      revealed += 1;
+      track.style.setProperty('--p', (revealed / total).toFixed(3));
+    });
+  }, { threshold: 0.4 });
+
+  steps.forEach((s) => io.observe(s));
+});
+
 /* ---------- hero video ----------
    Browsers autoplay a muted <video> even when the visitor prefers reduced
    motion, so we honour it ourselves: pause and show the poster instead. If the
