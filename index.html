@@ -4,14 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Evara Dental Clinic | Dr. Kshitija P Pervi, B.D.S (MUHS)</title>
-  <meta name="description" content="Evara Dental Clinic, the practice of Dr. Kshitija P Pervi, B.D.S (MUHS). Serene, world-class dental care: routine check-ups, cosmetic dentistry, orthodontics and oral surgery. Call 7400177989.">
+  <meta name="description" content="Evara Dental Clinic in Sector 18, Kharghar. Dr. Kshitija P Pervi, B.D.S (MUHS) treats every case personally: check-ups, root canals, implants, braces and kids' dentistry. Call 74001 77989 to book.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..700;1,400..700&family=Hanken+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 3C11 3 7 6.5 7 11.5c0 3.5 1.5 5.5 2.2 8.2.7 2.7 1 8.3 3.3 8.3 2 0 1.4-4.5 3.5-4.5s1.5 4.5 3.5 4.5c2.3 0 2.6-5.6 3.3-8.3.7-2.7 2.2-4.7 2.2-8.2C25 6.5 21 3 16 3z" fill="none" stroke="%232C3937" stroke-width="2"/></svg>'>
 </head>
 <body>
+
+  <a class="skip-link" href="#home">Skip to content</a>
 
   <!-- ======================= NAVIGATION ======================= -->
   <header class="site-header" id="siteHeader">
@@ -30,6 +32,7 @@
           <li><a href="#about">About</a></li>
           <li><a href="#treatments">Treatments</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#gallery">Gallery</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <a href="#contact" class="btn btn-primary nav-cta">Book Appointment</a>
@@ -43,8 +46,11 @@
     <section class="hero" id="home">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <h1>Your Smile,<br>Our Passion.</h1>
-          <p>Experience world-class dental care in a serene, welcoming clinic designed to ease anxiety and deliver pristine results, under the personal care of Dr.&nbsp;Kshitija&nbsp;P&nbsp;Pervi.</p>
+          <h1 class="hero-title">
+            <span class="line"><span>Your Smile,</span></span>
+            <span class="line"><span>Our Passion.</span></span>
+          </h1>
+          <p>A calm, spotless clinic in Kharghar where Dr.&nbsp;Kshitija&nbsp;P&nbsp;Pervi treats every patient herself, explains every step before it begins, and takes the fear out of the dental chair.</p>
           <div class="hero-actions">
             <a href="#contact" class="btn btn-primary">Book Appointment</a>
             <a href="#treatments" class="btn btn-outline">Explore Treatments</a>
@@ -61,8 +67,11 @@
           </div>
         </div>
         <div class="hero-media">
-          <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=1400&q=80"
-               alt="A dentist gently treating a relaxed patient in a bright, calm treatment room" fetchpriority="high">
+          <picture>
+            <source type="image/webp" sizes="(max-width: 860px) 100vw, 45vw"
+                    srcset="images/clinic-operatory-600.webp 600w, images/clinic-operatory.webp 960w">
+            <img src="images/clinic-operatory.jpeg" alt="The Evara Dental Clinic treatment room, with the dental chair, consultation desk and tooth-shaped mirror" width="960" height="1280" fetchpriority="high">
+          </picture>
         </div>
       </div>
     </section>
@@ -71,14 +80,17 @@
     <section class="philosophy band-beige" id="about">
       <div class="container split-grid">
         <div class="split-media">
-          <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1400&q=80"
-               alt="A serene, light-filled dental studio with a calm, modern palette" loading="lazy">
+          <picture>
+            <source type="image/webp" sizes="(max-width: 860px) 100vw, 50vw"
+                    srcset="images/clinic-chair-glass-600.webp 600w, images/clinic-chair-glass.webp 960w">
+            <img src="images/clinic-chair-glass.jpeg" alt="The treatment bay at Evara, looking through to the frosted-glass consultation room" width="960" height="1280" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="split-copy">
           <span class="pill">Our Philosophy</span>
-          <h2>Gentle precision. Elevated care.</h2>
-          <p>At Evara Dental Clinic, we believe dentistry should never feel clinical or intimidating. We have reimagined the patient experience by blending modern equipment with the calming environment of a wellness retreat.</p>
-          <p>Our approach is deeply rooted in ethical practice, patient education and minimising discomfort, ensuring you leave with not just a beautiful smile, but peace of mind.</p>
+          <h2>Gentle hands, honest advice.</h2>
+          <p>At Evara Dental Clinic, we believe dentistry should never feel clinical or intimidating. The clinic is built to feel calm: warm light, quiet rooms, and unhurried appointments that start with a conversation rather than a chair.</p>
+          <p>You see your own X-ray, hear the options in plain language, and get the cost in writing before anything begins. No upselling, no procedures you did not agree to.</p>
           <a class="arrow-link" href="#dentist">Learn more about our practice
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
           </a>
@@ -90,9 +102,11 @@
     <section class="dentist" id="dentist">
       <div class="container">
         <div class="dentist-card">
-          <div class="dentist-portrait" id="doctorPortrait">
-            <!-- EDIT: drop the doctor's real photo at images/dr-kshitija.jpg and it will appear automatically -->
-            <img src="images/dr-kshitija.jpg" alt="Dr. Kshitija P Pervi" id="doctorPhoto">
+          <!-- TO ADD THE DOCTOR'S PHOTO: save it as images/dr-kshitija.jpg, then
+               remove `no-photo` from the div below and add the src to the img:
+               <img id="doctorPhoto" src="images/dr-kshitija.jpg" alt="Dr. Kshitija P Pervi"> -->
+          <div class="dentist-portrait no-photo" id="doctorPortrait">
+            <img id="doctorPhoto" alt="Dr. Kshitija P Pervi">
             <div class="dentist-monogram" aria-hidden="true">
               <svg viewBox="0 0 32 32">
                 <path d="M16 3C11 3 7 6.5 7 11.5c0 3.5 1.5 5.5 2.2 8.2.7 2.7 1 8.3 3.3 8.3 2 0 1.4-4.5 3.5-4.5s1.5 4.5 3.5 4.5c2.3 0 2.6-5.6 3.3-8.3.7-2.7 2.2-4.7 2.2-8.2C25 6.5 21 3 16 3z" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -104,7 +118,7 @@
             <span class="pill">Lead Dentist</span>
             <h2>Dr. Kshitija P Pervi</h2>
             <p class="dentist-quote">&ldquo;Patients take the best care of smiles they truly understand.&rdquo;</p>
-            <p class="dentist-bio">A dedicated clinician committed to bridging the gap between clinical precision and genuine warmth. Dr. Pervi treats every case personally, from a child's first check-up to full-mouth rehabilitation, and believes in unhurried consultations where every treatment is explained before it begins.</p>
+            <p class="dentist-bio">Dr. Pervi treats every case herself, from a child's first check-up to full-mouth rehabilitation, and refers honestly when a specialist would serve you better. Consultations are unhurried, and she runs free dental camps around Kharghar through the year.</p>
             <ul class="dentist-creds">
               <li>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3L2 8l10 5 10-5-10-5zm-6 7.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>
@@ -128,8 +142,8 @@
     <section class="treatments" id="treatments">
       <div class="container">
         <div class="section-head">
-          <h2>Curated Treatments</h2>
-          <p>Evidence-based solutions for your comprehensive oral health.</p>
+          <h2>Treatments we provide</h2>
+          <p>Everyday dentistry and specialist work, all under one roof in Kharghar.</p>
         </div>
         <div class="treatment-cards">
           <article class="treatment-card">
@@ -188,7 +202,7 @@
           <div class="feature">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 21C7 16.5 4 13.3 4 9.8 4 7.2 6 5 8.5 5c1.4 0 2.7.7 3.5 1.8C12.8 5.7 14.1 5 15.5 5 18 5 20 7.2 20 9.8c0 3.5-3 6.7-8 11.2z"/></svg>
             <h3>Gentle Care</h3>
-            <p>A calm, sanctuary-like environment and gentle techniques designed to put anxious patients at ease.</p>
+            <p>Quiet rooms, gentle technique and modern anaesthesia, so nervous patients can sit through treatment in comfort.</p>
           </div>
           <div class="feature">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M16 11a4 4 0 1 0-8 0m8 0a4 4 0 0 1-8 0m8 0c2.8.6 5 2 5 4v3H3v-3c0-2 2.2-3.4 5-4"/></svg>
@@ -202,8 +216,11 @@
           </div>
         </div>
         <div class="split-media">
-          <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=1400&q=80"
-               alt="A bright, open dental studio with modern equipment and a calm palette" loading="lazy">
+          <picture>
+            <source type="image/webp" sizes="(max-width: 860px) 50vw, 25vw"
+                    srcset="images/clinic-sterilisation-600.webp 600w, images/clinic-sterilisation.webp 960w">
+            <img src="images/clinic-sterilisation.jpeg" alt="The sterilisation station at Evara, with autoclave cabinet, scrub sink and sealed instruments" width="960" height="1280" loading="lazy" decoding="async">
+          </picture>
         </div>
       </div>
     </section>
@@ -214,28 +231,94 @@
         <div class="section-head">
           <h2>Patient Stories</h2>
         </div>
-        <!-- EDIT: replace these three sample reviews with real ones from the Google Business Profile -->
         <div class="story-cards">
           <figure class="story-card">
-            <div class="stars" aria-label="5 out of 5 stars">
+            <div class="stars" role="img" aria-label="Rated 5 out of 5">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg>
             </div>
-            <blockquote>&ldquo;My root canal was completely painless and the doctor explained every step before doing it. The clinic is spotless and beautifully done.&rdquo;</blockquote>
-            <figcaption>&ndash; A Google review</figcaption>
+            <blockquote>&ldquo;I am extremely happy with the treatment I received at Evara Dental Clinic. Dr. Kshitija is highly professional and took the time to explain my dental issues in great detail before starting. She and her staff ensured that my filling procedure was smooth, efficient, and entirely stress-free. The clinic is very clean, hygienic, and follows excellent safety protocols. Their dedication to preventive dentistry and genuine patient care is truly commendable. If you want top-notch dental care in Kharghar, this is definitely the best place to go!!&rdquo;</blockquote>
+            <figcaption><span class="story-name">Sara Virkud</span>Google review &middot; Filling</figcaption>
           </figure>
           <figure class="story-card">
-            <div class="stars" aria-label="5 out of 5 stars">
+            <div class="stars" role="img" aria-label="Rated 5 out of 5">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg>
             </div>
-            <blockquote>&ldquo;Took my 6-year-old for her first dental visit and she left smiling. Dr. Pervi is wonderful with kids, very patient and gentle.&rdquo;</blockquote>
-            <figcaption>&ndash; A Google review</figcaption>
+            <blockquote>&ldquo;I recently had a fantastic experience at Evara Dental Clinic! Dr. Kshitija and her team provided exceptional care during my dental filling procedure, ensuring it was painless and effective. The clinic's focus on preventive dentistry and personalized attention made me feel confident in their expertise. Highly recommend for anyone looking for quality dental treatments in Kharghar!&rdquo;</blockquote>
+            <figcaption><span class="story-name">Jaishree Meshram</span>Google review &middot; Dental filling</figcaption>
           </figure>
           <figure class="story-card">
-            <div class="stars" aria-label="5 out of 5 stars">
+            <div class="stars" role="img" aria-label="Rated 5 out of 5">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9 5.9 20.4l1.5-6.8L2.2 9l6.9-.7z"/></svg>
             </div>
-            <blockquote>&ldquo;Honest doctor who tells you exactly what is needed and what is not. Fair pricing and no pushing of unnecessary treatments.&rdquo;</blockquote>
-            <figcaption>&ndash; A Google review</figcaption>
+            <blockquote>&ldquo;I recently visited Evara Dental Clinic for teeth polishing and cleaning, and it was a great experience. Dr. Kshitija Pervi was not only knowledgeable but also incredibly sweet, making the entire process smooth and comfortable. The clinic itself was clean, aesthetically pleasing, and maintained high hygiene standards. Highly recommend!&rdquo;</blockquote>
+            <figcaption><span class="story-name">Jayanti Dutta</span>Google review &middot; Polishing &amp; cleaning</figcaption>
+          </figure>
+        </div>
+
+        <div class="stories-cta">
+          <a class="btn btn-outline btn-google" href="https://www.google.com/maps/place/Evara+Dental+clinic/@19.0479641,72.9284267,11z/data=!4m12!1m2!2m1!1sevara+dental+clinic!3m8!1s0x3be7c31c560bcbef:0xb67b7b6c31695065!8m2!3d19.049499!4d73.0757435!9m1!1b1!15sChNldmFyYSBkZW50YWwgY2xpbmljWhUiE2V2YXJhIGRlbnRhbCBjbGluaWOSAQdkZW50aXN04AEA!16s%2Fg%2F11w4nky9dx" target="_blank" rel="noopener">
+            <svg class="g-logo" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.2-.4-4.7H24v8.9h11.8c-.5 2.7-2 5-4.4 6.6v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.3z"/><path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.400-9.1H4.2v5.7C7.8 41.1 15.3 46 24 46z"/><path fill="#FBBC05" d="M11.6 28.1c-.4-1.3-.7-2.7-.7-4.1s.2-2.8.7-4.1v-5.7H4.2C2.8 17.1 2 20.4 2 24s.8 6.9 2.2 9.8l7.4-5.7z"/><path fill="#EA4335" d="M24 10.8c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 4.3 30 2 24 2 15.3 2 7.8 6.9 4.2 14.2l7.4 5.7c1.7-5.2 6.6-9.1 12.4-9.1z"/></svg>
+            View all of our Google reviews
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= GALLERY ======================= -->
+    <section class="gallery" id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <h2>Inside the clinic</h2>
+          <p>Our clinic, and our team out in the community running free dental camps.</p>
+        </div>
+        <div class="gallery-grid">
+          <figure class="gallery-item gallery-wide">
+            <picture>
+              <source type="image/webp" sizes="(max-width: 860px) 100vw, 50vw"
+                      srcset="images/clinic-chair-600.webp 600w, images/clinic-chair.webp 960w">
+              <img src="images/clinic-chair.jpeg" alt="A dental chair and operating light at Evara Dental Clinic, ready for the next patient" width="960" height="1280" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Our treatment bay</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <picture>
+              <source type="image/webp" sizes="(max-width: 860px) 50vw, 25vw"
+                      srcset="images/clinic-sterilisation-600.webp 600w, images/clinic-sterilisation.webp 960w">
+              <img src="images/clinic-sterilisation.jpeg" alt="Sterilisation cabinet and scrub station with sealed instruments" width="960" height="1280" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Sterilisation station</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <picture>
+              <source type="image/webp" sizes="(max-width: 860px) 100vw, 45vw"
+                      srcset="images/clinic-operatory-600.webp 600w, images/clinic-operatory.webp 960w">
+              <img src="images/clinic-operatory.jpeg" alt="The consultation desk and treatment area at Evara Dental Clinic" width="960" height="1280" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Consultation area</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <picture>
+              <source type="image/webp" sizes="(max-width: 860px) 50vw, 25vw"
+                      srcset="images/camp-banner-600.webp 600w, images/camp-banner.webp 960w">
+              <img src="images/camp-banner.jpeg" alt="The Evara Dental Clinic team screening residents at a free community dental camp" width="960" height="1280" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Community dental camp</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <picture>
+              <source type="image/webp" sizes="(max-width: 860px) 50vw, 25vw"
+                      srcset="images/camp-checkup-600.webp 600w, images/camp-checkup.webp 960w">
+              <img src="images/camp-checkup.jpeg" alt="A dentist examining an elderly patient at an Evara community dental camp" width="1280" height="960" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Free check-ups for seniors</figcaption>
+          </figure>
+          <figure class="gallery-item gallery-wide">
+            <picture>
+              <source type="image/webp" sizes="(max-width: 860px) 100vw, 50vw"
+                      srcset="images/camp-child-600.webp 600w, images/camp-child.webp 960w">
+              <img class="focus-top" src="images/camp-child.jpeg" alt="A smiling dentist and a young patient after a check-up at a community dental camp" width="960" height="1280" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Making young patients smile</figcaption>
           </figure>
         </div>
       </div>
@@ -245,15 +328,15 @@
     <section class="contact" id="contact">
       <div class="container contact-grid">
         <div class="contact-copy">
-          <h2>Visit Our Sanctuary</h2>
-          <p>Ready to elevate your dental care experience? Reach out to schedule your consultation.</p>
+          <h2>Visit the clinic</h2>
+          <p>Send a request and we will confirm your slot on WhatsApp, usually the same day.</p>
           <ul class="contact-rows">
             <li>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-5.8-7-11a7 7 0 0 1 14 0c0 5.2-7 11-7 11z"/><circle cx="12" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
               <div>
                 <h3>Location</h3>
-                <!-- EDIT: replace with the full clinic address from the Google Business Profile -->
-                <p>Evara Dental Clinic<br>Ground floor, near you<br>Maharashtra</p>
+                <!-- EDIT: read off the camp banner — CONFIRM the building name before publishing -->
+                <p>Evara Dental Clinic<br>Shop No. 07, Sector 18<br>Kharghar, Navi Mumbai</p>
               </div>
             </li>
             <li>
@@ -272,12 +355,11 @@
             </li>
           </ul>
           <div class="map-wrap">
-            <!-- EDIT: once the exact address is known, replace the q= value with it for a precise pin -->
             <iframe
-              src="https://www.google.com/maps?q=Evara+Dental+Clinic+Dr+Kshitija+Pervi&output=embed"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241366.9513137969!2d72.92842665675079!3d19.04796413150614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c31c560bcbef%3A0xb67b7b6c31695065!2sEvara%20Dental%20clinic!5e0!3m2!1sen!2sin!4v1784654583688!5m2!1sen!2sin"
               title="Evara Dental Clinic on Google Maps"
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
+              referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen></iframe>
           </div>
         </div>
@@ -285,12 +367,12 @@
         <form class="appointment-card" id="appointmentForm" novalidate>
           <h3 class="appointment-title">Request an Appointment</h3>
           <div class="form-field">
-            <label for="fName">Full Name</label>
-            <input type="text" id="fName" name="name" autocomplete="name" required placeholder="Jane Doe">
+            <label for="fName">Full Name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="fName" name="name" autocomplete="name" required aria-required="true" aria-describedby="formError" placeholder="Jane Doe">
           </div>
           <div class="form-field">
-            <label for="fPhone">Phone Number</label>
-            <input type="tel" id="fPhone" name="phone" autocomplete="tel" inputmode="tel" required placeholder="98765 43210">
+            <label for="fPhone">Phone Number <span class="req" aria-hidden="true">*</span></label>
+            <input type="tel" id="fPhone" name="phone" autocomplete="tel" inputmode="tel" required aria-required="true" aria-describedby="formError" placeholder="98765 43210">
           </div>
           <div class="form-field">
             <label for="fService">Service Needed</label>
@@ -312,7 +394,7 @@
             <input type="date" id="fDate" name="date">
           </div>
           <p class="form-error" id="formError" role="alert" hidden>Please fill in your name and phone number so we can confirm your appointment.</p>
-          <button type="submit" class="btn btn-primary btn-wide">Submit Request</button>
+          <button type="submit" class="btn btn-primary btn-wide"><span class="btn-label">Submit Request</span></button>
           <p class="form-note">Your request opens in WhatsApp, ready to send to the clinic (74001 77989).</p>
         </form>
       </div>
@@ -339,7 +421,7 @@
   </footer>
 
   <div class="fab-stack">
-    <a href="https://www.instagram.com/evara_dental_clinic/" class="fab fab-instagram" target="_blank" rel="noopener" aria-label="Follow Evara Dental Clinic on Instagram">
+    <a href="https://www.instagram.com/evara_dental_clinic" class="fab fab-instagram" target="_blank" rel="noopener" aria-label="Follow Evara Dental Clinic on Instagram">
       <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1m0-2.2C8.7 0 8.3 0 7 .1 5.7.2 4.9.4 4.1.7c-.8.3-1.5.7-2.1 1.4C1.3 2.7.9 3.4.6 4.2.3 4.9.1 5.8.1 7 0 8.3 0 8.7 0 12s0 3.7.1 5c.1 1.2.3 2.1.6 2.8.3.8.7 1.5 1.4 2.1.6.6 1.3 1.1 2.1 1.4.7.3 1.6.5 2.8.6 1.3.1 1.7.1 5 .1s3.7 0 5-.1c1.2-.1 2.1-.3 2.8-.6.8-.3 1.5-.7 2.1-1.4.6-.6 1.1-1.3 1.4-2.1.3-.7.5-1.6.6-2.8.1-1.3.1-1.7.1-5s0-3.7-.1-5c-.1-1.2-.3-2.1-.6-2.8-.3-.8-.7-1.5-1.4-2.1C21.3 1.3 20.6.9 19.8.6 19.1.3 18.2.1 17 .1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.9a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>
     </a>
     <a href="https://wa.me/917400177989?text=Hello%20Evara%20Dental%20Clinic%2C%20I%27d%20like%20to%20book%20an%20appointment."

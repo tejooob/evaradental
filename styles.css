@@ -1,25 +1,46 @@
 /* ==========================================================================
    Evara Dental Clinic — Lumina reference layout with the client's exact
-   style-guide tokens: #8FBAB6 / #7A7A7A / #EAE4DA / #F8F9F8,
+   style-guide tokens, tuned to clear WCAG AA contrast.
    Noto Serif headlines, Hanken Grotesk body.
    ========================================================================== */
 
 :root {
-  /* color — exact tokens from the client style guide */
-  --neutral:    #F8F9F8;   /* Neutral: page background */
-  --sage:       #8FBAB6;   /* Primary: icon chips, labels, stars */
-  --gray:       #7A7A7A;   /* Secondary: body text */
-  --beige:      #EAE4DA;   /* Tertiary: bands, portrait bg */
+  /* color — client style guide, with text/icon values darkened to clear WCAG AA.
+     Guide values kept verbatim wherever they are used as FILLS (dark content on
+     top passes); darkened only where the color itself had to carry contrast. */
+  --neutral:    #F8F9F8;   /* Neutral: page background (guide) */
+  --sage:       #8FBAB6;   /* Primary: fills — buttons, pills, icon chips (guide) */
+  --sage-hover: #7BA9A4;   /* Primary, pressed */
+  --sage-ink:   #4F7873;   /* Primary, darkened: icons + stars that carry meaning */
+  --gray:       #595959;   /* Secondary, darkened from #7A7A7A: body text */
+  --beige:      #EAE4DA;   /* Tertiary: bands, portrait bg (guide) */
   --beige-deep: #DFD8CB;   /* darker tertiary: footer */
+  --surface-alt:#F0F0ED;   /* treatments band */
   --white:      #FFFFFF;
   --dark:       #2C3937;   /* buttons / inverted, from the guide's primary button */
   --dark-hover: #202B29;
   --ink:        #222827;   /* headings */
-  --line:       #E2E1DB;   /* hairline borders */
+  --line:       #E2E1DB;   /* decorative hairlines (cards, dividers) */
+  --line-strong:#8E8E8E;   /* borders that identify a control (inputs, outline btn) */
+  --error:      #A33B2A;
+  --placeholder:#6B6B6B;
 
-  /* type */
-  --font-display: "Noto Serif", "Georgia", serif;
-  --font-body: "Hanken Grotesk", "Segoe UI", sans-serif;
+  /* type families — client style guide; not swapped. Metric-matched fallbacks
+     (defined below) sit ahead of the system fonts to minimise load shift. */
+  --font-display: "Spectral", "Spectral Fallback", Georgia, serif;
+  --font-body: "Hanken Grotesk", "Hanken Fallback", "Segoe UI", system-ui, sans-serif;
+
+  /* type scale — practical ramp anchored at 1rem/16px body, strong contrast at
+     the display end. Only the two headline steps are fluid; everything else is
+     fixed so the layout stays predictable. Semantic names, never by-value. */
+  --text-xs:   0.8125rem;  /* 13px — uppercase pills + form labels */
+  --text-sm:   0.875rem;   /* 14px — nav, captions, metadata, buttons */
+  --text-base: 1rem;       /* 16px — body (WCAG floor; stops iOS input zoom) */
+  --text-md:   1.125rem;   /* 18px — lead lines, pull quote */
+  --text-lg:   1.25rem;    /* 20px — card headings */
+  --text-xl:   1.5rem;     /* 24px — panel titles */
+  --text-2xl:  clamp(1.9rem, 1.4rem + 2vw, 2.5rem);    /* section headings */
+  --text-3xl:  clamp(2.5rem, 1.6rem + 3.6vw, 3.6rem);  /* hero */
 
   /* rhythm */
   --space-section: clamp(4rem, 9vw, 7rem);
@@ -27,13 +48,47 @@
   --radius: 12px;
   --radius-lg: 16px;
 
+  /* z-index scale */
   --z-header: 10;
+  --z-fab: 20;
+  --z-skip: 100;
+
+  /* motion — the clinic's promise is "unhurried", so everything decelerates
+     into place and nothing overshoots. No bounce, no elastic, anywhere. */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-press:  120ms;   /* presses and colour shifts: under the 80-150ms feel-instant band */
+  --dur-state:  260ms;   /* hovers, focus rings, menu items */
+  --dur-layout: 400ms;   /* menu open, card lift */
+  --dur-enter:  700ms;   /* entrances, deliberately slow for a nervous audience */
+}
+
+/* Metric-matched fallbacks: hold the fallback close to the web font's box so
+   text does not reflow when Noto Serif / Hanken Grotesk swap in. Values are
+   approximate; tune with Fontaine if a measured CLS pass is ever run. */
+@font-face {
+  font-family: "Hanken Fallback";
+  src: local("Segoe UI"), local("Arial");
+  size-adjust: 105%;
+  ascent-override: 90%;
+  descent-override: 23.5%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Spectral Fallback";
+  src: local("Georgia");
+  size-adjust: 100%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
 }
 
 /* ---------- reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; }
 img { max-width: 100%; display: block; }
+/* <picture> is only a source selector; let the <img> lay out as if direct child */
+picture { display: contents; }
 h1, h2, h3, p, ul, ol, dl, figure, blockquote { margin: 0; }
 
 html {
@@ -43,11 +98,14 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 0.9688rem;   /* 15.5px */
-  line-height: 1.7;
+  font-size: var(--text-base);
+  line-height: 1.65;
   color: var(--gray);
   background: var(--neutral);
   -webkit-font-smoothing: antialiased;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
 }
 
 .sr-only {
@@ -55,6 +113,21 @@ body {
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -100%;
+  z-index: var(--z-skip);
+  padding: 0.75rem 1.25rem;
+  background: var(--dark);
+  color: var(--white);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+}
+.skip-link:focus { top: 0; }
 
 .container {
   max-width: var(--container);
@@ -78,14 +151,15 @@ h1, h2, h3 {
   font-weight: 500;
   color: var(--ink);
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
-h2 { font-size: clamp(1.75rem, 3.2vw, 2.4rem); text-wrap: balance; }
-p { max-width: 62ch; }
+h2 { font-size: var(--text-2xl); }
+p { max-width: 66ch; text-wrap: pretty; }
 
 .pill {
   display: inline-block;
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -102,19 +176,20 @@ p { max-width: 62ch; }
 }
 .section-head p {
   margin: 0.75rem auto 0;
-  font-size: 0.9375rem;
+  font-size: var(--text-md);
 }
 
 .arrow-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.9375rem;
+  min-height: 44px;            /* WCAG 2.5.5 tap target */
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--dark);
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: gap 0.25s ease, border-color 0.2s ease;
+  transition: gap var(--dur-state) var(--ease-out-quart), border-color var(--dur-state) var(--ease-out-quart);
 }
 .arrow-link svg { width: 1.05rem; height: 1.05rem; }
 .arrow-link:hover { gap: 0.8rem; border-bottom-color: var(--dark); }
@@ -129,25 +204,32 @@ p { max-width: 62ch; }
   border-radius: 8px;
   border: 1px solid transparent;
   font-family: var(--font-body);
-  font-size: 0.9375rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease,
-              border-color 0.25s ease, transform 0.25s ease;
+  transition: background-color var(--dur-state) var(--ease-out-quart),
+              color var(--dur-state) var(--ease-out-quart),
+              border-color var(--dur-state) var(--ease-out-quart),
+              box-shadow var(--dur-state) var(--ease-out-quart),
+              transform var(--dur-press) var(--ease-out-quart);
 }
-.btn:active { transform: translateY(1px); }
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); transition-duration: var(--dur-press); }
 
 .btn-primary {
   background: var(--sage);
   color: var(--dark);
 }
-.btn-primary:hover { background: #7BA9A4; }
+.btn-primary:hover {
+  background: var(--sage-hover);
+  box-shadow: 0 6px 18px rgba(79, 120, 115, 0.28);
+}
 
 .btn-outline {
   background: transparent;
   color: var(--ink);
-  border-color: #CFCFCA;
+  border-color: var(--line-strong);
 }
 .btn-outline:hover { border-color: var(--dark); color: var(--dark); }
 
@@ -164,6 +246,7 @@ p { max-width: 62ch; }
 }
 .split-media img {
   width: 100%;
+  height: auto;          /* let aspect-ratio win over the width/height attrs */
   border-radius: var(--radius-lg);
   aspect-ratio: 5 / 4;
   object-fit: cover;
@@ -182,9 +265,13 @@ p { max-width: 62ch; }
   background: rgba(248, 249, 248, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease;
+  transition: border-color var(--dur-layout) var(--ease-out-quart),
+              box-shadow var(--dur-layout) var(--ease-out-quart);
 }
-.site-header.scrolled { border-bottom-color: var(--line); }
+.site-header.scrolled {
+  border-bottom-color: var(--line);
+  box-shadow: 0 4px 20px rgba(34, 40, 39, 0.06);
+}
 
 .nav {
   max-width: var(--container);
@@ -198,7 +285,7 @@ p { max-width: 62ch; }
 
 .brand {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
   font-weight: 600;
   color: var(--ink);
   text-decoration: none;
@@ -217,26 +304,44 @@ p { max-width: 62ch; }
   padding: 0;
 }
 .nav-links a {
+  position: relative;
   color: var(--gray);
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   padding-block: 0.35rem;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color var(--dur-state) var(--ease-out-quart);
 }
 .nav-links a:hover { color: var(--ink); }
-.nav-links a.active {
-  color: var(--dark);
-  border-bottom-color: var(--dark);
+.nav-links a.active { color: var(--dark); }
+
+/* Underline grows from the left rather than blinking on. Desktop only:
+   on mobile the links use a bottom border as a list divider. */
+@media (min-width: 861px) {
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: var(--dark);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-state) var(--ease-out-quart);
+  }
+  .nav-links a:hover::after,
+  .nav-links a.active::after { transform: scaleX(1); }
 }
-.nav-cta { padding: 0.6rem 1.25rem; font-size: 0.875rem; }
+.nav-cta { padding: 0.6rem 1.25rem; font-size: var(--text-sm); }
 
 .nav-toggle {
   display: none;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 7px;
-  padding: 0.75rem 0.5rem;
+  width: 44px;                 /* WCAG 2.5.5 tap target */
+  height: 44px;
+  padding: 0;
   background: none;
   border: 0;
   cursor: pointer;
@@ -245,10 +350,12 @@ p { max-width: 62ch; }
   width: 26px;
   height: 2px;
   background: var(--ink);
-  transition: transform 0.3s ease;
+  transition: transform var(--dur-state) var(--ease-out-quart);
 }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:first-child { transform: translateY(4.5px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:last-child { transform: translateY(-4.5px) rotate(-45deg); }
+/* NB: the button's last child is the sr-only label, not a bar, so these must
+   target the bars by position among the bars themselves. */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { transform: translateY(-4.5px) rotate(-45deg); }
 
 @media (max-width: 860px) {
   .nav-toggle { display: flex; }
@@ -265,12 +372,25 @@ p { max-width: 62ch; }
     border-bottom: 1px solid var(--line);
     display: none;
   }
-  .nav-menu.open { display: flex; }
+  .nav-menu.open {
+    display: flex;
+    animation: menu-in var(--dur-layout) var(--ease-out-quart) both;
+  }
+  @keyframes menu-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* Each row arrives just after the panel, so the menu unfolds. */
+  .nav-menu.open .nav-links li,
+  .nav-menu.open .nav-cta {
+    animation: rise 380ms var(--ease-out-quart) both;
+    animation-delay: calc(90ms + var(--i, 0) * 45ms);
+  }
   .nav-links { flex-direction: column; gap: 0; }
   .nav-links a {
     display: block;
     padding: 0.85rem 0;
-    font-size: 1rem;
+    font-size: var(--text-base);
     border-bottom: 1px solid var(--line);
   }
   .nav-cta { margin-top: 1.25rem; }
@@ -287,12 +407,14 @@ p { max-width: 62ch; }
   align-items: center;
 }
 .hero-copy h1 {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-size: var(--text-3xl);
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 .hero-copy p {
   margin-top: 1.4rem;
-  max-width: 42ch;
+  font-size: var(--text-md);
+  max-width: 44ch;
 }
 .hero-actions {
   display: flex;
@@ -310,18 +432,19 @@ p { max-width: 62ch; }
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   color: var(--ink);
 }
 .hero-badge svg {
   width: 1.05rem;
   height: 1.05rem;
-  color: var(--sage);
+  color: var(--sage-ink);
   flex-shrink: 0;
 }
 .hero-media img {
   width: 100%;
+  height: auto;          /* let aspect-ratio win over the width/height attrs */
   border-radius: var(--radius-lg);
   aspect-ratio: 6 / 5;
   object-fit: cover;
@@ -381,13 +504,13 @@ p { max-width: 62ch; }
 .dentist-monogram svg { width: 5rem; height: 5rem; }
 .dentist-monogram span {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: var(--text-xl);
 }
 .dentist-copy h2 { margin-bottom: 0.9rem; }
 .dentist-quote {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: var(--text-md);
   color: var(--ink);
   margin-bottom: 1rem;
 }
@@ -403,13 +526,13 @@ p { max-width: 62ch; }
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.9063rem;
+  font-size: var(--text-base);
   color: var(--ink);
 }
 .dentist-creds svg {
   width: 1.15rem;
   height: 1.15rem;
-  color: var(--sage);
+  color: var(--sage-ink);
   flex-shrink: 0;
 }
 @media (max-width: 860px) {
@@ -420,7 +543,7 @@ p { max-width: 62ch; }
 /* ==========================================================================
    Treatments
    ========================================================================== */
-.treatments { padding-block: var(--space-section); background: #F0F0ED; }
+.treatments { padding-block: var(--space-section); background: var(--surface-alt); }
 .treatment-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
@@ -434,6 +557,16 @@ p { max-width: 62ch; }
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  transition: transform var(--dur-layout) var(--ease-out-quart),
+              box-shadow var(--dur-layout) var(--ease-out-quart),
+              border-color var(--dur-layout) var(--ease-out-quart);
+}
+/* Treatment cards contain a link, so they get a hover affordance.
+   Review cards deliberately do not: nothing there is clickable. */
+.treatment-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--sage);
+  box-shadow: 0 10px 28px rgba(34, 40, 39, 0.07);
 }
 .card-icon {
   width: 2.6rem;
@@ -446,12 +579,12 @@ p { max-width: 62ch; }
   margin-bottom: 0.3rem;
 }
 .card-icon svg { width: 1.4rem; height: 1.4rem; }
-.treatment-card h3 { font-size: 1.2rem; }
+.treatment-card h3 { font-size: var(--text-lg); }
 .treatment-card p {
-  font-size: 0.875rem;
+  font-size: var(--text-base);
   flex-grow: 1;
 }
-.treatment-card .arrow-link { font-size: 0.875rem; }
+.treatment-card .arrow-link { font-size: var(--text-sm); }
 
 /* ==========================================================================
    Features + interior
@@ -465,14 +598,14 @@ p { max-width: 62ch; }
 .feature svg {
   width: 1.5rem;
   height: 1.5rem;
-  color: var(--sage);
+  color: var(--sage-ink);
   margin-bottom: 0.7rem;
 }
 .feature h3 {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   margin-bottom: 0.35rem;
 }
-.feature p { font-size: 0.875rem; }
+.feature p { font-size: var(--text-base); }
 @media (max-width: 560px) {
   .feature-list { grid-template-columns: 1fr; }
 }
@@ -498,19 +631,91 @@ p { max-width: 62ch; }
 .stars {
   display: flex;
   gap: 0.2rem;
-  color: var(--sage);
+  color: var(--sage-ink);
 }
 .stars svg { width: 0.95rem; height: 0.95rem; }
+/* Reviews are set upright in the body sans, not italic: Hanken Grotesk has no
+   italic loaded (it would synthesise a slanted faux-italic), and long passages
+   read better upright. The quotation marks already mark it as a quote. */
 .story-card blockquote {
-  font-style: italic;
-  font-size: 0.9375rem;
+  font-size: var(--text-base);
+  line-height: 1.6;
   color: var(--ink);
   flex-grow: 1;
   text-wrap: pretty;
 }
 .story-card figcaption {
-  font-size: 0.8438rem;
+  font-size: var(--text-sm);
   color: var(--gray);
+}
+.story-name {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.1rem;
+}
+
+.stories-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+}
+.btn-google {
+  background: var(--white);
+  gap: 0.65rem;
+}
+.g-logo {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Gallery
+   ========================================================================== */
+.gallery { padding-block: var(--space-section); }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--beige);
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 600ms var(--ease-out-quart);
+}
+.gallery-item:hover img { transform: scale(1.04); }
+/* portrait sources in wide frames: bias the crop toward faces */
+.gallery-item img.focus-top { object-position: center 32%; }
+.gallery-wide { grid-column: span 2; }
+.gallery-wide img { aspect-ratio: 2 / 1; }
+.gallery-item figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.5rem 1rem 0.85rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(to top, rgba(34, 40, 39, 0.78), transparent);
+  transition: padding-bottom var(--dur-layout) var(--ease-out-quart),
+              background var(--dur-layout) var(--ease-out-quart);
+}
+.gallery-item:hover figcaption {
+  padding-bottom: 1.1rem;
+  background: linear-gradient(to top, rgba(34, 40, 39, 0.9), transparent);
+}
+@media (max-width: 860px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-wide { grid-column: span 2; }
 }
 
 /* ==========================================================================
@@ -539,17 +744,23 @@ p { max-width: 62ch; }
 .contact-rows svg {
   width: 1.25rem;
   height: 1.25rem;
-  color: var(--sage);
+  color: var(--sage-ink);
   flex-shrink: 0;
   margin-top: 0.2rem;
 }
 .contact-rows h3 {
   font-family: var(--font-body);
-  font-size: 0.9375rem;
+  font-size: var(--text-base);
   font-weight: 600;
   margin-bottom: 0.15rem;
 }
-.contact-rows p { font-size: 0.9063rem; }
+.contact-rows p { font-size: var(--text-base); }
+/* tel: and WhatsApp are the primary mobile conversions — full tap target */
+.contact-rows a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 
 .map-wrap {
   margin-top: 2.25rem;
@@ -573,12 +784,12 @@ p { max-width: 62ch; }
   gap: 1.15rem;
 }
 .appointment-title {
-  font-size: 1.35rem;
+  font-size: var(--text-xl);
   margin-bottom: 0.35rem;
 }
 .form-field { display: grid; gap: 0.4rem; }
 .form-field label {
-  font-size: 0.6875rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -587,33 +798,50 @@ p { max-width: 62ch; }
 .form-field input,
 .form-field select {
   font: inherit;
-  font-size: 0.9375rem;
+  font-size: var(--text-base);
   color: var(--ink);
-  background: var(--neutral);
-  border: 1px solid var(--line);
+  background: var(--white);
+  border: 1px solid var(--line-strong);
   border-radius: 8px;
   padding: 0.75rem 0.9rem;
   width: 100%;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--dur-state) var(--ease-out-quart), box-shadow var(--dur-state) var(--ease-out-quart);
 }
-.form-field input::placeholder { color: #9AA09E; }
+.form-field input::placeholder { color: var(--placeholder); }
 .form-field input:focus,
 .form-field select:focus {
   border-color: var(--dark);
+  box-shadow: 0 0 0 3px rgba(143, 186, 182, 0.35);
   outline: none;
 }
+/* The field that blocked submission shakes once, so the eye is taken to it
+   rather than only to the message underneath. */
+.form-field.shake input { animation: shake 400ms var(--ease-out-quart) both; }
+@keyframes shake {
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+  to  { transform: none; }
+}
+
+/* Submitting hands off to WhatsApp in another tab, so the button says so. */
+.btn.is-sending { pointer-events: none; }
+.btn.is-sending .btn-label { opacity: 0.6; }
 .form-field select {
   appearance: none;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path d="M1 1l5 5 5-5" fill="none" stroke="%232C3937" stroke-width="2" stroke-linecap="round"/></svg>');
   background-repeat: no-repeat;
   background-position: right 0.9rem center;
 }
+.req { color: var(--error); }
+.form-field input[aria-invalid="true"] { border-color: var(--error); }
 .form-error {
-  color: #A33B2A;
-  font-size: 0.875rem;
+  color: var(--error);
+  font-size: var(--text-sm);
 }
 .form-note {
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   text-align: center;
 }
 @media (max-width: 860px) {
@@ -634,24 +862,27 @@ p { max-width: 62ch; }
 }
 .footer-brand {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: var(--text-lg);
   font-weight: 600;
   color: var(--ink);
   margin-bottom: 0.5rem;
 }
 .footer-fine {
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   color: var(--gray);
 }
 .footer-col {
   display: grid;
-  gap: 0.55rem;
+  gap: 0;
   align-content: start;
 }
 .footer-col a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--gray);
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
 }
 .footer-col a:hover { color: var(--dark); }
 @media (max-width: 700px) {
@@ -665,7 +896,7 @@ p { max-width: 62ch; }
   position: fixed;
   right: 1.25rem;
   bottom: 1.25rem;
-  z-index: 20;
+  z-index: var(--z-fab);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -678,7 +909,7 @@ p { max-width: 62ch; }
   place-items: center;
   color: #fff;
   box-shadow: 0 8px 24px rgba(34, 40, 39, 0.28);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--dur-state) var(--ease-out-quart), box-shadow var(--dur-state) var(--ease-out-quart);
 }
 .fab:hover {
   transform: translateY(-3px);
@@ -690,21 +921,128 @@ p { max-width: 62ch; }
 }
 
 /* ==========================================================================
-   Subtle reveal (JS-gated; page is fully visible without it)
+   Reveals
+   Four behaviours, each matched to what it reveals, rather than one
+   fade-and-rise on every section.
+
+   IMPORTANT: the DEFAULT state of every revealed element is fully visible.
+   The hidden start frame lives ONLY inside the @keyframes, and is applied by
+   `animation` when the IntersectionObserver adds `.in`. So if the observer
+   never runs (JS off or failed, restored scroll, a background tab), the page
+   is simply visible, never blank. This is the reason it is animation-based
+   rather than an `opacity: 0` base state that a class has to undo.
    ========================================================================== */
-body.js .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-body.js .reveal.in {
-  opacity: 1;
-  transform: none;
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. Copy blocks: opacity only. Sliding paragraphs read as restless, and
+        the whole brand claim is that nothing here is rushed. */
+  body.js [data-reveal="copy"].in {
+    animation: rv-fade var(--dur-enter) var(--ease-out-quart) both;
+  }
+
+  /* 2. Photographs: a wipe upward out of a slight over-scale, so the room
+        appears to open rather than slide in from nowhere. */
+  body.js [data-reveal="media"].in {
+    animation: rv-media var(--dur-enter) var(--ease-out-expo) both;
+  }
+
+  /* 3. Genuine sibling lists (treatments, reviews, gallery, features). Stagger
+        is legitimate here because these ARE lists; capped at 6 so the last
+        item never waits more than ~350ms. */
+  body.js [data-reveal="item"].in {
+    animation: rv-item 520ms var(--ease-out-quart) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  /* 4. Single composed panels (dentist card, booking form): they settle down
+        out of a slight under-scale, like something set on a table. */
+  body.js [data-reveal="panel"].in {
+    animation: rv-panel var(--dur-enter) var(--ease-out-expo) both;
+  }
+
+  /* Section headings wipe in from the top as their block reveals: a restrained
+     counterpart to the hero's lift, applied only to h2s. */
+  body.js [data-reveal].in h2 {
+    animation: rv-head 800ms var(--ease-out-expo) both;
+  }
+
+  /* The five stars tick in one after another once a review card lands. */
+  body.js [data-reveal="item"].in .stars svg {
+    animation: star-in 380ms var(--ease-out-quart) both;
+  }
+  .stars svg:nth-child(1) { animation-delay: 260ms; }
+  .stars svg:nth-child(2) { animation-delay: 315ms; }
+  .stars svg:nth-child(3) { animation-delay: 370ms; }
+  .stars svg:nth-child(4) { animation-delay: 425ms; }
+  .stars svg:nth-child(5) { animation-delay: 480ms; }
 }
 
+@keyframes rv-fade  { from { opacity: 0; }                                              to { opacity: 1; } }
+@keyframes rv-item  { from { opacity: 0; transform: translateY(16px); }                 to { opacity: 1; transform: none; } }
+@keyframes rv-panel { from { opacity: 0; transform: translateY(18px) scale(0.99); }     to { opacity: 1; transform: none; } }
+@keyframes rv-media { from { opacity: 0; clip-path: inset(14% 0 0 0); transform: scale(1.03); }
+                      to   { opacity: 1; clip-path: inset(0 0 0 0);  transform: none; } }
+@keyframes rv-head  { from { clip-path: inset(-0.12em -0.12em 105% -0.12em); }
+                      to   { clip-path: inset(-0.12em -0.12em -0.12em -0.12em); } }
+@keyframes star-in  { from { opacity: 0; transform: scale(0.4); }                        to { opacity: 1; transform: none; } }
+
+/* ==========================================================================
+   Hero entrance — the one rehearsed moment on the page
+   ========================================================================== */
+body.js .hero-media    { animation: room-open 1000ms var(--ease-out-expo) both; }
+body.js .hero-copy > p { animation: rise 800ms var(--ease-out-expo) 460ms both; }
+body.js .hero-actions  { animation: rise 800ms var(--ease-out-expo) 580ms both; }
+body.js .hero-badges   { animation: rise 800ms var(--ease-out-expo) 680ms both; }
+
+/* Hero headline: each line rises out from behind its own clip box, so the
+   words appear to lift into place. This is the page's signature text moment. */
+.hero-title .line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.hero-title .line > span { display: block; }
+body.js .hero-title .line > span {
+  transform: translateY(115%);
+  animation: line-rise 950ms var(--ease-out-expo) forwards;
+}
+body.js .hero-title .line:nth-child(1) > span { animation-delay: 150ms; }
+body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
+
+@keyframes room-open {
+  from { opacity: 0; clip-path: inset(18% 0 0 0); transform: scale(1.05); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0);   transform: none; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes line-rise {
+  to { transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Reduced motion — every animation above has a still equivalent
+   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  body.js .reveal { opacity: 1; transform: none; transition: none; }
-  .btn, .arrow-link, .fab { transition: none; }
-  .fab:hover { transform: none; }
+
+  /* Scroll reveals are already off here: every reveal animation lives inside
+     `prefers-reduced-motion: no-preference`, and the default state is visible.
+     Only the load-triggered entrances need explicitly cancelling. */
+  body.js .hero-media,
+  body.js .hero-copy > p,
+  body.js .hero-actions,
+  body.js .hero-badges,
+  body.js .hero-title .line > span,
+  .nav-menu.open,
+  .form-field.shake input {
+    animation: none;
+  }
+
+  /* The masked hero lines must reset to visible, not sit at their hidden start. */
+  body.js .hero-title .line > span { transform: none; }
+
+  /* Hovers and presses become instant colour changes only. */
+  .btn, .arrow-link, .fab, .gallery-item img, .gallery-item figcaption,
+  .treatment-card, .nav-links a::after, .site-header {
+    transition-duration: 1ms;
+  }
+  .btn:hover, .btn:active, .fab:hover, .treatment-card:hover,
+  .gallery-item:hover img { transform: none; }
 }
