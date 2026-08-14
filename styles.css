@@ -397,24 +397,51 @@ p { max-width: 66ch; text-wrap: pretty; }
 }
 
 /* ==========================================================================
-   Hero
+   Hero — full-bleed video background with the copy overlaid on a warm scrim
    ========================================================================== */
-.hero { padding-block: clamp(2.5rem, 6vw, 5rem); }
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  gap: clamp(2.5rem, 6vw, 5rem);
+.hero--video {
+  position: relative;
+  overflow: hidden;
+  display: flex;
   align-items: center;
+  min-height: min(84vh, 720px);
+  padding-block: clamp(4rem, 10vh, 7rem);
 }
+
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% center;   /* keep the subject framed as it crops */
+}
+/* Warm dark-green scrim, heaviest on the left where the copy sits, opening up
+   on the right so the video reads through. A faint floor gradient anchors it. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(95deg,
+      rgba(28, 36, 34, 0.9) 0%,
+      rgba(28, 36, 34, 0.74) 38%,
+      rgba(28, 36, 34, 0.4) 66%,
+      rgba(28, 36, 34, 0.22) 100%),
+    linear-gradient(to top, rgba(28, 36, 34, 0.45), transparent 45%);
+}
+
+.hero--video .container { position: relative; z-index: 1; width: 100%; }
+.hero--video .hero-copy { max-width: 40rem; }
+
 .hero-copy h1 {
   font-size: var(--text-3xl);
   letter-spacing: -0.02em;
-  text-wrap: balance;
+  color: var(--white);
 }
-.hero-copy p {
+.hero--video .hero-copy p {
   margin-top: 1.4rem;
   font-size: var(--text-md);
-  max-width: 44ch;
+  max-width: 42ch;
+  color: rgba(255, 255, 255, 0.9);
 }
 .hero-actions {
   display: flex;
@@ -434,24 +461,41 @@ p { max-width: 66ch; text-wrap: pretty; }
   gap: 0.5rem;
   font-size: var(--text-sm);
   font-weight: 500;
-  color: var(--ink);
+  color: var(--white);
 }
 .hero-badge svg {
   width: 1.05rem;
   height: 1.05rem;
-  color: var(--sage-ink);
+  color: var(--sage);   /* lighter sage reads on the dark scrim */
   flex-shrink: 0;
 }
-.hero-media img {
-  width: 100%;
-  height: auto;          /* let aspect-ratio win over the width/height attrs */
-  border-radius: var(--radius-lg);
-  aspect-ratio: 6 / 5;
-  object-fit: cover;
+
+/* Outline button, light variant, for use over the video */
+.btn-outline--light {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.6);
 }
+.btn-outline--light:hover {
+  color: var(--white);
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.12);
+}
+
 @media (max-width: 860px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-media { order: -1; }
+  .hero--video {
+    min-height: 78vh;
+    align-items: flex-end;       /* copy sits low; the face reads up top */
+    padding-bottom: clamp(2.5rem, 8vh, 4rem);
+  }
+  /* Heavier, bottom-weighted scrim so the overlaid copy stays legible when
+     the video crops to centre and the subject sits behind the text. */
+  .hero-scrim {
+    background: linear-gradient(to top,
+      rgba(28, 36, 34, 0.92) 0%,
+      rgba(28, 36, 34, 0.7) 34%,
+      rgba(28, 36, 34, 0.4) 62%,
+      rgba(28, 36, 34, 0.3) 100%);
+  }
 }
 
 /* ==========================================================================
@@ -988,10 +1032,15 @@ p { max-width: 66ch; text-wrap: pretty; }
 /* ==========================================================================
    Hero entrance — the one rehearsed moment on the page
    ========================================================================== */
-body.js .hero-media    { animation: room-open 1000ms var(--ease-out-expo) both; }
+body.js .hero-bg       { animation: bg-in 1200ms var(--ease-out-expo) both; }
 body.js .hero-copy > p { animation: rise 800ms var(--ease-out-expo) 460ms both; }
 body.js .hero-actions  { animation: rise 800ms var(--ease-out-expo) 580ms both; }
 body.js .hero-badges   { animation: rise 800ms var(--ease-out-expo) 680ms both; }
+
+@keyframes bg-in {
+  from { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* Hero headline: each line rises out from behind its own clip box, so the
    words appear to lift into place. This is the page's signature text moment. */
@@ -1004,10 +1053,6 @@ body.js .hero-title .line > span {
 body.js .hero-title .line:nth-child(1) > span { animation-delay: 150ms; }
 body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
 
-@keyframes room-open {
-  from { opacity: 0; clip-path: inset(18% 0 0 0); transform: scale(1.05); }
-  to   { opacity: 1; clip-path: inset(0 0 0 0);   transform: none; }
-}
 @keyframes rise {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: none; }
@@ -1025,7 +1070,7 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
   /* Scroll reveals are already off here: every reveal animation lives inside
      `prefers-reduced-motion: no-preference`, and the default state is visible.
      Only the load-triggered entrances need explicitly cancelling. */
-  body.js .hero-media,
+  body.js .hero-bg,
   body.js .hero-copy > p,
   body.js .hero-actions,
   body.js .hero-badges,

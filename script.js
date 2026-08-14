@@ -128,6 +128,27 @@ safely('scrollspy', () => {
   sections.forEach((s) => spy.observe(s));
 });
 
+/* ---------- hero video ----------
+   Browsers autoplay a muted <video> even when the visitor prefers reduced
+   motion, so we honour it ourselves: pause and show the poster instead. If the
+   video fails to load or decode, the poster already covers it (no action). */
+safely('hero-video', () => {
+  const video = document.getElementById('heroVideo');
+  if (!video) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const apply = () => {
+    if (reduce.matches) {
+      video.removeAttribute('autoplay');
+      video.pause();
+    } else if (video.paused) {
+      video.play().catch(() => {}); // autoplay may still be blocked; poster stays
+    }
+  };
+  apply();
+  reduce.addEventListener('change', apply);
+});
+
 /* ---------- doctor photo fallback ----------
    The markup ships with no `src`, so there is no failed request. This only
    matters once a real photo is added and then fails to load. */

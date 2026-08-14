@@ -47,7 +47,9 @@ Type: Noto Serif headlines, Hanken Grotesk body (both from the guide).
 
 ## Imagery
 
-All photography is the clinic's own (`images/`): four interior shots of the Kharghar practice and three from the team's free community dental camps. Served as WebP via `<picture>` with 600w/960w `srcset`, with JPEG fallbacks. Treatment cards use SVG icons rather than photos by design.
+Section photography is the clinic's own (`images/`): four interior shots of the Kharghar practice and three from the team's free community dental camps. Served as WebP via `<picture>` with 600w/960w `srcset`, with JPEG fallbacks. Treatment cards use SVG icons rather than photos by design.
+
+The hero uses a full-bleed background video (`videos/hero-smile.mp4`, muted/looping/inline, with `images/hero-poster.jpg` as poster and reduced-motion fallback). NOTE: this clip is AI-generated stock of a generic person, not the clinic or Dr. Pervi, and the subject does not match the local patient demographic. It was added at the client's request and is the one exception to the real-photography principle; swap for genuine clinic footage when available.
 
 ## Accessibility & Inclusion
 

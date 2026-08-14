@@ -43,8 +43,18 @@
   <main>
 
     <!-- ======================= HERO ======================= -->
-    <section class="hero" id="home">
-      <div class="container hero-grid">
+    <section class="hero hero--video" id="home">
+      <div class="hero-bg" aria-hidden="true">
+        <!-- Decorative background clip. Poster shows before load and whenever
+             the video is paused (reduced-motion, or a failed/blocked load). -->
+        <video class="hero-video" id="heroVideo"
+               autoplay muted loop playsinline preload="metadata"
+               poster="images/hero-poster.jpg" tabindex="-1" aria-hidden="true">
+          <source src="videos/hero-smile.mp4" type="video/mp4">
+        </video>
+        <div class="hero-scrim"></div>
+      </div>
+      <div class="container">
         <div class="hero-copy">
           <h1 class="hero-title">
             <span class="line"><span>Your Smile,</span></span>
@@ -53,7 +63,7 @@
           <p>A calm, spotless clinic in Kharghar where Dr.&nbsp;Kshitija&nbsp;P&nbsp;Pervi treats every patient herself, explains every step before it begins, and takes the fear out of the dental chair.</p>
           <div class="hero-actions">
             <a href="#contact" class="btn btn-primary">Book Appointment</a>
-            <a href="#treatments" class="btn btn-outline">Explore Treatments</a>
+            <a href="#treatments" class="btn btn-outline btn-outline--light">Explore Treatments</a>
           </div>
           <div class="hero-badges">
             <span class="hero-badge">
@@ -65,13 +75,6 @@
               Expert Care
             </span>
           </div>
-        </div>
-        <div class="hero-media">
-          <picture>
-            <source type="image/webp" sizes="(max-width: 860px) 100vw, 45vw"
-                    srcset="images/clinic-operatory-600.webp 600w, images/clinic-operatory.webp 960w">
-            <img src="images/clinic-operatory.jpeg" alt="The Evara Dental Clinic treatment room, with the dental chair, consultation desk and tooth-shaped mirror" width="960" height="1280" fetchpriority="high">
-          </picture>
         </div>
       </div>
     </section>
