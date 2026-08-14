@@ -128,6 +128,91 @@ safely('scrollspy', () => {
   sections.forEach((s) => spy.observe(s));
 });
 
+/* ---------- reading progress + hero parallax ----------
+   Both are driven from one rAF-throttled scroll listener so we never do layout
+   work twice per frame, and both write only transform-driving custom props. */
+safely('scroll-fx', () => {
+  const bar = document.getElementById('scrollProgressBar');
+  const heroBg = document.querySelector('.hero-bg');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!bar && !heroBg) return;
+
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const doc = document.documentElement;
+
+    if (bar) {
+      const scrollable = doc.scrollHeight - window.innerHeight;
+      const p = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      bar.style.setProperty('--sp', p.toFixed(4));
+    }
+
+    // Video drifts slower than the page, which reads as depth. Skipped for
+    // reduced motion, and only while the hero is actually on screen.
+    if (heroBg && !reduce.matches) {
+      const y = window.scrollY;
+      heroBg.style.transform = y < window.innerHeight
+        ? `translate3d(0, ${(y * 0.18).toFixed(1)}px, 0)`
+        : '';
+    }
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  reduce.addEventListener('change', () => {
+    if (heroBg) heroBg.style.transform = '';
+    onScroll();
+  });
+});
+
+/* ---------- statement: split into words, then stagger on reveal ----------
+   The text is already visible; this only wraps each word so CSS can stagger
+   them, and adds `.in` when the line scrolls into view. */
+safely('statement', () => {
+  const el = document.querySelector('[data-split]');
+  if (!el || !('IntersectionObserver' in window)) return;
+
+  const words = el.textContent.trim().split(/\s+/);
+  el.textContent = '';
+  words.forEach((word, i) => {
+    const span = document.createElement('span');
+    span.className = 'word';
+    span.style.setProperty('--w', i);
+    span.textContent = word;
+    el.append(span, document.createTextNode(' '));
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.35 });
+  io.observe(el);
+});
+
+/* ---------- FAQ: only one answer open at a time ---------- */
+safely('faq', () => {
+  const items = [...document.querySelectorAll('.faq-item')];
+  if (!items.length) return;
+  items.forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      items.forEach((other) => { if (other !== item) other.open = false; });
+    });
+  });
+});
+
 /* ---------- Smile Journey timeline ----------
    Reveals each step once as it enters the viewport (staggered via CSS --i)
    and grows the connector fill from 0 to 1 as steps appear. Cards are visible

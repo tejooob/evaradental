@@ -15,6 +15,10 @@
 
   <a class="skip-link" href="#home">Skip to content</a>
 
+  <!-- Reading progress. Decorative: the same information is available from the
+       scrollbar, so it is hidden from assistive tech. -->
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgressBar"></span></div>
+
   <!-- ======================= NAVIGATION ======================= -->
   <header class="site-header" id="siteHeader">
     <nav class="nav" aria-label="Main">
@@ -33,6 +37,7 @@
           <li><a href="#treatments">Treatments</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
           <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <a href="#contact" class="btn btn-primary nav-cta">Book Appointment</a>
@@ -84,6 +89,7 @@
           <h2>Gentle hands, honest advice.</h2>
           <p>At Evara Dental Clinic, we believe dentistry should never feel clinical or intimidating. The clinic is built to feel calm: warm light, quiet rooms, and unhurried appointments that start with a conversation rather than a chair.</p>
           <p>You see your own X-ray, hear the options in plain language, and get the cost in writing before anything begins. No upselling, no procedures you did not agree to.</p>
+          <p>Dr. Pervi treats every patient personally, so you are not handed between clinicians halfway through a course of treatment. Instruments are autoclaved and laid out sealed in front of you, disposables are fresh for every appointment, and the equipment is modern: digital X-rays, 3D oral scanning and rotary endodontics, all of which make treatment shorter and more comfortable than it used to be.</p>
           <a class="arrow-link" href="#dentist">Learn more about our practice
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
           </a>
@@ -170,6 +176,16 @@
             </li>
           </ol>
         </div>
+      </div>
+    </section>
+
+    <!-- ======================= STATEMENT ======================= -->
+    <!-- One dominant idea per fold. The words are wrapped individually so JS
+         can stagger them in; they are fully visible without JS. -->
+    <section class="statement">
+      <div class="container">
+        <p class="statement-text" data-split>You will always know what is happening in your mouth, why it needs doing, and what it costs, before anything begins.</p>
+        <p class="statement-by">Dr. Kshitija P Pervi, B.D.S (MUHS)</p>
       </div>
     </section>
 
@@ -554,6 +570,80 @@
             </picture>
             <figcaption>Making young patients smile</figcaption>
           </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= FAQ ======================= -->
+    <!-- Native <details>/<summary> for real keyboard and screen-reader support;
+         the open/close is animated with grid-template-rows, never height. -->
+    <section class="faq band-beige" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2>Questions patients ask us</h2>
+          <p>If your question is not here, call or WhatsApp us on 74001&nbsp;77989 and we will answer it honestly.</p>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>
+              Will the treatment hurt?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div>
+              <p>For the great majority of our patients, no. Modern local anaesthesia and gentle technique mean that fillings, scaling and even root canals are usually painless, and most people are surprised by how little they feel. If you are nervous, tell us at the start: we will explain each step before it happens, work in shorter stretches, and stop whenever you raise your hand.</p>
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              What will my treatment cost?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div>
+              <p>You get a written estimate before any work begins. After examining you, Dr. Pervi shows you the X-ray, explains which treatments are genuinely necessary and which are optional, and gives you the cost of each in writing. Nothing proceeds until you agree to it, and we never add procedures you did not approve.</p>
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Do you treat children?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div>
+              <p>Yes. We see children for first check-ups, cavity care, fluoride treatment, pit and fissure sealants, and habit counselling for thumb-sucking or grinding. Dr. Pervi keeps children's appointments short and unhurried so that the dentist stays a place they do not mind visiting. Parents are welcome to stay beside the chair throughout.</p>
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Can I be seen today for a dental emergency?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div>
+              <p>We keep same-day slots for emergencies. If you have severe toothache, a swelling or abscess, a broken or knocked-out tooth, or a lost filling or crown, call or WhatsApp <a href="tel:+917400177989">74001&nbsp;77989</a> and we will fit you in as soon as we can, usually the same day. For a knocked-out adult tooth, keep it in milk and come in immediately: the first hour matters.</p>
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              How often should I come for a check-up?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div>
+              <p>Every six months for most people, along with scaling and polishing to remove the tartar that a toothbrush cannot reach. Catching a cavity at the check-up stage usually means a small filling instead of a root canal later, so routine visits are the cheapest dentistry there is. If you have gum disease, diabetes or braces, we may suggest coming more often.</p>
+            </div></div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Where is the clinic and what are your timings?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer"><div>
+              <p>Evara Dental Clinic is at Shop No. 07, Sector 18, Kharghar, Navi Mumbai. We are open Monday to Saturday, morning and evening, with Sunday by appointment. Booking ahead is best, and you can request a slot through the <a href="#contact">form below</a> or on WhatsApp.</p>
+            </div></div>
+          </details>
         </div>
       </div>
     </section>
