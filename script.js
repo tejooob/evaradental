@@ -22,7 +22,7 @@ safely('reveals', () => {
     ['.split-media, .why-media', 'media'],
     ['.split-copy, .contact-copy, .section-head', 'copy'],
     ['.dentist-card, .appointment-card, .stories-cta', 'panel'],
-    ['.treatment-card, .story-card, .feature, .gallery-item', 'item'],
+    ['.service-card, .story-card, .feature, .gallery-item', 'item'],
   ];
 
   const revealer = new IntersectionObserver((entries) => {
@@ -46,7 +46,7 @@ safely('reveals', () => {
   // Stagger runs per row of siblings, not across the whole page, so the last
   // card in any group waits ~350ms at most rather than several seconds.
   document.querySelectorAll(
-    '.treatment-cards, .story-cards, .feature-list, .gallery-grid'
+    '.service-grid, .story-cards, .feature-list, .gallery-grid'
   ).forEach((group) => {
     [...group.children].forEach((child, i) => {
       child.style.setProperty('--i', Math.min(i, 5));
