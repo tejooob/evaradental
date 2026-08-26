@@ -5,11 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Evara Dental Clinic | Dr. Kshitija P Pervi, B.D.S (MUHS)</title>
   <meta name="description" content="Evara Dental Clinic in Sector 18, Kharghar. Dr. Kshitija P Pervi, B.D.S (MUHS) treats every case personally: check-ups, root canals, implants, braces and kids' dentistry. Call 74001 77989 to book.">
+  <!-- Self-referencing relative canonical: the clinic has not settled on a
+       domain yet. Once it has, make this and og:image absolute and add og:url. -->
+  <link rel="canonical" href="index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Evara Dental Clinic">
+  <meta property="og:title" content="Evara Dental Clinic | Gentle dental care in Kharghar">
+  <meta property="og:description" content="Family dentistry in Sector 18, Kharghar with Dr. Kshitija P Pervi, B.D.S (MUHS). Check-ups, cleaning, fillings, root canals and implants.">
+  <meta property="og:image" content="images/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 3C11 3 7 6.5 7 11.5c0 3.5 1.5 5.5 2.2 8.2.7 2.7 1 8.3 3.3 8.3 2 0 1.4-4.5 3.5-4.5s1.5 4.5 3.5 4.5c2.3 0 2.6-5.6 3.3-8.3.7-2.7 2.2-4.7 2.2-8.2C25 6.5 21 3 16 3z" fill="none" stroke="%232C3937" stroke-width="2"/></svg>'>
+
+  <!-- Local business structured data. NOTE: opening hours are deliberately
+       omitted rather than guessed — add openingHoursSpecification once the
+       clinic confirms exact timings, and confirm the postal code. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dentist",
+    "name": "Evara Dental Clinic",
+    "description": "Family dental clinic in Sector 18, Kharghar, Navi Mumbai, run by Dr. Kshitija P Pervi, B.D.S (MUHS).",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Shop No. 07, Sector 18",
+      "addressLocality": "Kharghar",
+      "addressRegion": "Navi Mumbai, Maharashtra",
+      "postalCode": "410210",
+      "addressCountry": "IN"
+    },
+    "telephone": "+91-74001-77989",
+    "sameAs": ["https://www.instagram.com/evara_dental_clinic"],
+    "employee": {
+      "@type": "Dentist",
+      "name": "Dr. Kshitija P Pervi",
+      "honorificSuffix": "B.D.S (MUHS)",
+      "identifier": "Reg No. A-44613"
+    },
+    "availableService": [
+      { "@type": "MedicalProcedure", "name": "Teeth cleaning (scaling and polishing)", "url": "services/teeth-cleaning.html" },
+      { "@type": "MedicalProcedure", "name": "Teeth filling (tooth-coloured fillings)", "url": "services/teeth-filling.html" },
+      { "@type": "MedicalProcedure", "name": "Root canal treatment", "url": "services/root-canal-treatment.html" },
+      { "@type": "MedicalProcedure", "name": "Dental implants", "url": "services/dental-implants.html" }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -34,7 +77,7 @@
         <ul class="nav-links">
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
-          <li><a href="#treatments">Treatments</a></li>
+          <li><a href="services/index.html">Treatments</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
           <li><a href="#gallery">Gallery</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -264,6 +307,9 @@
                 <li>Inlays &amp; Onlays</li>
                 <li>Replacement of Old / Failed Restorations</li>
               </ul>
+              <a class="arrow-link" href="services/teeth-filling.html">Teeth filling, explained
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
+              </a>
             </div>
           </article>
 
@@ -285,6 +331,9 @@
                 <li>Dental Crowns After RCT</li>
                 <li>Management of Dental Pain &amp; Infection</li>
               </ul>
+              <a class="arrow-link" href="services/root-canal-treatment.html">Root canal treatment, explained
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
+              </a>
             </div>
           </article>
 
@@ -307,6 +356,9 @@
                 <li>Pit &amp; Fissure Sealants</li>
                 <li>Oral Hygiene Guidance</li>
               </ul>
+              <a class="arrow-link" href="services/teeth-cleaning.html">Teeth cleaning, explained
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
+              </a>
             </div>
           </article>
 
@@ -432,11 +484,14 @@
                 <li>Implant Treatment Planning</li>
                 <li>Implant Maintenance</li>
               </ul>
+              <a class="arrow-link" href="services/dental-implants.html">Dental implants, explained
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
+              </a>
             </div>
           </article>
 
         </div>
-        <p class="services-cta">Not sure which you need? <a href="#contact">Book a consultation</a> and Dr. Pervi will examine, explain your options and let you decide.</p>
+        <p class="services-cta"><a href="services/index.html">See all treatments in detail</a>, or, if you are not sure which you need, <a href="#contact">book a consultation</a> and Dr. Pervi will examine, explain your options and let you decide.</p>
       </div>
     </section>
 
@@ -733,6 +788,12 @@
         <p class="footer-fine">&copy; <span id="year">2026</span> Evara Dental Clinic. All rights reserved.</p>
         <p class="footer-fine">Dr. Kshitija P Pervi &middot; B.D.S (MUHS) &middot; Reg No. A-44613</p>
       </div>
+      <nav class="footer-col" aria-label="Treatments">
+        <a href="services/teeth-cleaning.html">Teeth Cleaning</a>
+        <a href="services/teeth-filling.html">Teeth Filling</a>
+        <a href="services/root-canal-treatment.html">Root Canal Treatment</a>
+        <a href="services/dental-implants.html">Dental Implants</a>
+      </nav>
       <nav class="footer-col" aria-label="Legal">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
