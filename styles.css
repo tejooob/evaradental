@@ -39,7 +39,7 @@
   --text-md:   1.125rem;   /* 18px — lead lines, pull quote */
   --text-lg:   1.25rem;    /* 20px — card headings */
   --text-xl:   1.5rem;     /* 24px — panel titles */
-  --text-2xl:  clamp(1.9rem, 1.4rem + 2vw, 2.5rem);    /* section headings */
+  --text-2xl:  clamp(2rem, 1.35rem + 2.6vw, 3rem);     /* section headings */
   --text-3xl:  clamp(2.5rem, 1.6rem + 3.6vw, 3.6rem);  /* hero */
 
   /* rhythm */
@@ -170,13 +170,30 @@ p { max-width: 66ch; text-wrap: pretty; }
   margin-bottom: 1.1rem;
 }
 
+/* Section heads sit on the left edge with their introduction set beside the
+   title, baseline to baseline, rather than a centred title over a centred
+   line: the page reads down one strong left margin. */
 .section-head {
-  text-align: center;
-  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.9rem clamp(2rem, 6vw, 5rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
 }
-.section-head p {
-  margin: 0.75rem auto 0;
-  font-size: var(--text-md);
+.section-head:has(> :only-child) { grid-template-columns: 1fr; }
+.section-head p { font-size: var(--text-md); }
+@media (max-width: 860px) {
+  .section-head { grid-template-columns: 1fr; }
+}
+
+/* One quiet kicker style, used sparingly where a role needs naming. */
+.kicker {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--sage-ink);
+  margin-bottom: 0.75rem;
 }
 
 .arrow-link {
@@ -435,8 +452,10 @@ p { max-width: 66ch; text-wrap: pretty; }
 /* Compact hero copy: the background video is the focus, so the headline is
    sized down from the display step and the supporting line stays to one row. */
 .hero-copy h1 {
-  font-size: var(--text-2xl);
-  letter-spacing: -0.015em;
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
   color: var(--white);
 }
 .hero--video .hero-copy p {
@@ -504,211 +523,151 @@ p { max-width: 66ch; text-wrap: pretty; }
    Philosophy
    ========================================================================== */
 .philosophy { padding-block: var(--space-section); }
-.philosophy h2 { margin-bottom: 1.1rem; }
+.philosophy .split-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; }
+.philosophy .split-media img { aspect-ratio: 4 / 5; }
+.philosophy h2 { margin-bottom: 1.5rem; }
+/* The first paragraph is the argument; set it as a serif lead so the three
+   paragraphs read as a claim and its evidence, not as one grey block. */
+.philosophy .split-copy > p:first-of-type {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: 1.45;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
 .philosophy p + p { margin-top: 0.9rem; }
 .philosophy .arrow-link { margin-top: 1.6rem; }
+@media (min-width: 861px) {
+  .philosophy .split-copy { padding-top: clamp(1rem, 4vw, 3rem); }
+}
+@media (max-width: 860px) {
+  .philosophy .split-grid { grid-template-columns: 1fr; }
+  .philosophy .split-media img { aspect-ratio: 4 / 3; }
+  .philosophy .split-copy > p:first-of-type { font-size: var(--text-lg); }
+}
 
 /* ==========================================================================
-   Smile Journey — five-step timeline
-   Built to the requested spec (badges, filling connector, staggered reveal,
-   pulsing icons, vertical on mobile) but in the site's warm palette rather
-   than a template blue, so it reads as part of the same brand.
+   A visit, step by step — five steps on one rail
+   No cards, no icons: the sequence is the content, so the numerals and the
+   rail carry it. Each step owns one segment of the rail (its top border on
+   desktop, its left border on mobile); script.js writes --f (0 to 1) on each
+   step as the visitor scrolls, and the segment fills. A step counts as
+   "reached" once its segment starts filling.
    ========================================================================== */
 .journey {
-  position: relative;
   padding-block: var(--space-section);
   background: var(--white);
-  overflow: hidden;   /* contain the blurred orbs */
 }
 
-/* Soft blurred background circles for depth (decorative). */
-.journey-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-.journey-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.5;
-}
-.journey-orb--a {
-  width: 26rem; height: 26rem;
-  top: -8rem; left: -6rem;
-  background: radial-gradient(circle, rgba(143, 186, 182, 0.5), transparent 70%);
-}
-.journey-orb--b {
-  width: 30rem; height: 30rem;
-  bottom: -12rem; right: -8rem;
-  background: radial-gradient(circle, rgba(234, 228, 218, 0.7), transparent 70%);
-}
-.journey .container { position: relative; z-index: 1; }
-
-.journey-track { position: relative; }
-
-/* Connector rail + gradient fill. On desktop it runs horizontally through the
-   badge row; JS sets --p (0 to 1) on .journey-track as steps reveal. */
-.journey-line {
-  position: absolute;
-  top: 1.6rem;                 /* badge centre (3.2rem badge) */
-  left: 10%;                   /* first badge centre in a 5-column grid */
-  right: 10%;                  /* last badge centre */
-  height: 3px;
-  border-radius: 999px;
-  background: var(--line);
-  overflow: hidden;
-}
-.journey-line-fill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--sage), var(--sage-ink));
-  transform: scaleX(var(--p, 0));
-  transform-origin: left center;
-  transition: transform 600ms var(--ease-out-quart);
-}
 
 .journey-steps {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: clamp(1rem, 2vw, 1.75rem);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .journey-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1.25rem;
-}
-
-/* Circular numbered badge sits on the connector. */
-.journey-badge {
+  --f: 1;                       /* fully drawn unless script.js says otherwise */
   position: relative;
-  z-index: 1;
-  width: 3.2rem;
-  height: 3.2rem;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--dark);
-  color: var(--white);
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  box-shadow: 0 0 0 6px var(--white);   /* mask the rail behind the badge */
+  padding: 1.75rem clamp(1rem, 2.4vw, 2rem) 0 0;
 }
 
-.journey-card {
-  width: 100%;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.6rem 1.35rem;
-  box-shadow: 0 10px 30px rgba(34, 40, 39, 0.06);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  transition: transform var(--dur-layout) var(--ease-out-quart),
-              box-shadow var(--dur-layout) var(--ease-out-quart);
-}
-.journey-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 18px 40px rgba(34, 40, 39, 0.1);
-}
-
-/* Small icon chip above the title. */
-.journey-icon {
-  width: 3rem;
-  height: 3rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--beige);
-  color: var(--sage-ink);
-  margin-bottom: 0.2rem;
-}
-.journey-icon svg { width: 1.5rem; height: 1.5rem; }
-.journey-card h3 { font-size: var(--text-lg); }
-.journey-card p { font-size: var(--text-sm); color: var(--gray); }
-
-/* --- Tablet: keep it horizontal, tighten spacing --- */
-@media (max-width: 900px) {
-  .journey-steps { gap: 0.75rem; }
-  .journey-card { padding: 1.25rem 1rem; }
-  .journey-line { left: 10%; right: 10%; }
-}
-
-/* --- Mobile: vertical timeline with a left-side connector --- */
-@media (max-width: 620px) {
-  .journey-steps { grid-template-columns: 1fr; gap: 1.5rem; }
-  .journey-step {
-    flex-direction: row;
-    align-items: flex-start;
-    text-align: left;
-    gap: 1.1rem;
-  }
-  .journey-card { align-items: flex-start; }
-  .journey-icon { margin-bottom: 0; }
-  /* Rail becomes vertical, pinned to the badge column. */
-  .journey-line {
-    top: 1.6rem;
-    bottom: 1.6rem;
-    left: 1.6rem;
-    right: auto;
-    width: 3px;
-    height: auto;
-  }
-  .journey-line-fill {
-    transform: scaleY(var(--p, 0));
-    transform-origin: top center;
-  }
-}
-
-/* Entrance + idle motion. Steps are visible by default (blank-proof); the
-   observer adds `.in` to play the staggered fade-up. Icons pulse gently. */
-@media (prefers-reduced-motion: no-preference) {
-  body.js .journey-step.in {
-    animation: journey-in 500ms var(--ease-out-quart) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
-  }
-  .journey-icon svg {
-    animation: icon-pulse 4.5s ease-in-out infinite;
-    animation-delay: calc(var(--i, 0) * 300ms);
-  }
-}
-@keyframes journey-in {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes icon-pulse {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.09); }
-}
-
-/* ==========================================================================
-   Reading progress bar
-   ========================================================================== */
-.scroll-progress {
-  position: fixed;
+/* The rail: a hairline, and on top of it the fill that grows with scroll. */
+.journey-step::before,
+.journey-step::after {
+  content: "";
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  z-index: var(--z-skip);
-  background: transparent;
-  pointer-events: none;
+  height: 2px;
 }
-.scroll-progress span {
-  display: block;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(90deg, var(--sage), var(--sage-ink));
-  transform: scaleX(var(--sp, 0));
+.journey-step::before { background: var(--line); }
+.journey-step::after {
+  background: var(--sage-ink);
+  transform: scaleX(var(--f));
   transform-origin: left center;
 }
+
+.journey-no {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 1.8rem + 2.4vw, 3.75rem);
+  line-height: 1;
+  font-weight: 400;
+  color: var(--sage-ink);
+  margin-bottom: 1.1rem;
+  font-variant-numeric: lining-nums;
+  transition: color var(--dur-layout) var(--ease-out-quart);
+}
+.journey-step h3 {
+  font-size: var(--text-lg);
+  margin-bottom: 0.45rem;
+}
+.journey-step p {
+  font-size: var(--text-base);
+  transition: opacity var(--dur-layout) var(--ease-out-quart);
+}
+
+/* Unreached steps are drawn in outline, and only when the script is running
+   the rail: without JS every step is simply fully visible. */
+body.js .journey-step:not(.is-reached) .journey-no { color: #CFCDC5; }
+
+@media (max-width: 900px) {
+  .journey-steps { grid-template-columns: 1fr; }
+  .journey-step {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    column-gap: 1rem;
+    padding: 0 0 1.75rem 1.5rem;
+  }
+  .journey-step:last-child { padding-bottom: 0; }
+  .journey-step::before,
+  .journey-step::after {
+    top: 0;
+    bottom: 0;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+  .journey-step::after {
+    transform: scaleY(var(--f));
+    transform-origin: center top;
+  }
+  .journey-no {
+    grid-row: span 2;
+    font-size: 2.4rem;
+    margin-bottom: 0;
+  }
+}
+
+/* ---------- treatment pages: the same rail on the numbered process ----------
+   The step numbers already sit in their own column; the rail runs down the
+   left edge of each row and fills as that step is read. */
+.steps[data-rail] li {
+  --f: 1;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.steps[data-rail] li::before,
+.steps[data-rail] li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.6rem;
+  bottom: 0;
+  width: 2px;
+}
+.steps[data-rail] li::before { background: rgba(255, 255, 255, 0.14); }
+.steps[data-rail] li::after {
+  background: var(--sage);
+  transform: scaleY(var(--f));
+  transform-origin: center top;
+}
+.steps[data-rail] .step-no { transition: color var(--dur-layout) var(--ease-out-quart); }
+body.js .steps[data-rail] li:not(.is-reached) .step-no { color: rgba(255, 255, 255, 0.4); }
 
 /* ==========================================================================
    Statement band — one dominant idea, set large on the dark green
@@ -722,8 +681,8 @@ p { max-width: 66ch; text-wrap: pretty; }
   max-width: 44ch;
   margin-inline: auto;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1.05rem + 1.8vw, 2.25rem);
-  line-height: 1.35;
+  font-size: clamp(1.65rem, 1.1rem + 2.2vw, 2.6rem);
+  line-height: 1.3;
   letter-spacing: -0.01em;
   text-align: center;
   text-wrap: balance;
@@ -738,52 +697,61 @@ p { max-width: 66ch; text-wrap: pretty; }
   text-transform: uppercase;
   color: var(--sage);
 }
-/* Words are wrapped by JS. Visible by default; the stagger is enhancement. */
+/* The page's one authored moment. The promise is about knowing what happens
+   before it happens, so it is read into view: script.js wraps each word and
+   writes --sp (0 to 1) as the band crosses the viewport, and the words ink in
+   from faint to full in reading order, a couple of words ahead of each other.
+   Fully visible by default, and fully inked under reduced motion. */
 .statement-text .word { display: inline-block; }
 @media (prefers-reduced-motion: no-preference) {
-  body.js .statement-text.in .word {
-    animation: word-in 620ms var(--ease-out-expo) both;
-    animation-delay: calc(var(--w, 0) * 42ms);
+  body.js .statement-text[data-scrub] .word {
+    opacity: clamp(0.18, calc(var(--sp, 1) * (var(--n, 1) + 3) - var(--w, 0)), 1);
   }
-}
-@keyframes word-in {
-  from { opacity: 0; transform: translateY(0.5em); filter: blur(4px); }
-  to   { opacity: 1; transform: none; filter: blur(0); }
 }
 
 /* ==========================================================================
    FAQ — native details/summary, animated with grid-template-rows
    ========================================================================== */
 .faq { padding-block: var(--space-section); }
-.faq-list {
-  max-width: 52rem;
-  margin-inline: auto;
+
+/* Heading on the left, held in view while the questions scroll past it. */
+.faq-layout {
   display: grid;
-  gap: 0.85rem;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 2rem clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+.faq-layout > .section-head {
+  grid-template-columns: 1fr;
+  margin-bottom: 0;
+}
+.faq-layout > .section-head h2 { font-size: clamp(1.9rem, 1.3rem + 1.9vw, 2.5rem); }
+@media (min-width: 861px) {
+  .faq-layout > .section-head { position: sticky; top: 6.5rem; }
+}
+@media (max-width: 860px) {
+  .faq-layout { grid-template-columns: 1fr; }
+}
+
+.faq-list {
+  display: grid;
+  border-top: 1px solid rgba(34, 40, 39, 0.16);
 }
 .faq-item {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: border-color var(--dur-state) var(--ease-out-quart),
-              box-shadow var(--dur-state) var(--ease-out-quart);
-}
-.faq-item[open] {
-  border-color: var(--sage);
-  box-shadow: 0 10px 28px rgba(34, 40, 39, 0.06);
+  border-bottom: 1px solid rgba(34, 40, 39, 0.16);
 }
 .faq-item summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1.15rem 1.35rem;
+  gap: 1.5rem;
+  padding-block: 1.35rem;
   min-height: 44px;
   cursor: pointer;
   list-style: none;
   font-family: var(--font-display);
-  font-size: var(--text-md);
+  font-size: var(--text-lg);
+  line-height: 1.35;
   color: var(--ink);
 }
 .faq-item summary::-webkit-details-marker { display: none; }
@@ -816,7 +784,7 @@ p { max-width: 66ch; text-wrap: pretty; }
   display: grid;
   grid-template-rows: 1fr;   /* open state; closed handled below */
 }
-.faq-answer > div { overflow: hidden; padding: 0 1.35rem 1.3rem; }
+.faq-answer > div { overflow: hidden; padding: 0 clamp(0rem, 4vw, 3rem) 1.5rem 0; }
 .faq-answer p { font-size: var(--text-base); }
 @media (prefers-reduced-motion: no-preference) {
   .faq-item:not([open]) .faq-answer { grid-template-rows: 0fr; }
@@ -829,13 +797,9 @@ p { max-width: 66ch; text-wrap: pretty; }
 .dentist { padding-block: var(--space-section); }
 .dentist-card {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 6vw, 5rem);
   align-items: center;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.5rem, 4vw, 3rem);
 }
 .dentist-portrait {
   position: relative;
@@ -850,6 +814,7 @@ p { max-width: 66ch; text-wrap: pretty; }
   object-fit: cover;
 }
 .dentist-portrait img.missing { display: none; }
+/* Nameplate: dark green, an inset hairline frame, large serif initials. */
 .dentist-monogram {
   position: absolute;
   inset: 0;
@@ -857,29 +822,60 @@ p { max-width: 66ch; text-wrap: pretty; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.9rem;
-  color: var(--dark);
-  background: var(--sage);
+  gap: 0.6rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--white);
+  background: var(--dark);
+}
+.dentist-monogram::before {
+  content: "";
+  position: absolute;
+  inset: 0.9rem;
+  border: 1px solid rgba(143, 186, 182, 0.4);
+  border-radius: 6px;
+  pointer-events: none;
 }
 .dentist-portrait.no-photo .dentist-monogram { display: flex; }
-.dentist-monogram svg { width: 5rem; height: 5rem; }
-.dentist-monogram span {
+.monogram-initials {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: clamp(4.5rem, 3rem + 5vw, 7rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--sage);
 }
-.dentist-copy h2 { margin-bottom: 0.9rem; }
+.monogram-rule {
+  width: 2.5rem;
+  height: 1px;
+  margin-block: 0.9rem 0.4rem;
+  background: rgba(143, 186, 182, 0.6);
+}
+.monogram-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+}
+.monogram-meta {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+.dentist-copy h2 { margin-bottom: 1rem; }
 .dentist-quote {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: var(--text-md);
+  font-size: var(--text-xl);
+  line-height: 1.4;
   color: var(--ink);
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 .dentist-bio { margin-bottom: 1.6rem; }
 .dentist-creds {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--line);
   display: grid;
   gap: 0.85rem;
 }
@@ -898,7 +894,11 @@ p { max-width: 66ch; text-wrap: pretty; }
 }
 @media (max-width: 860px) {
   .dentist-card { grid-template-columns: 1fr; }
-  .dentist-portrait { max-width: 22rem; }
+  .dentist-portrait { max-width: 26rem; }
+  .dentist-portrait.no-photo { aspect-ratio: 5 / 4; }
+}
+@media (max-width: 480px) {
+  .hero-actions .btn { flex: 1 1 100%; }
 }
 
 /* ==========================================================================
@@ -924,7 +924,9 @@ p { max-width: 66ch; text-wrap: pretty; }
               box-shadow var(--dur-layout) var(--ease-out-quart),
               border-color var(--dur-layout) var(--ease-out-quart);
 }
-.service-card:hover {
+/* Only cards that lead somewhere respond to hover; lifting a card that is not
+   a link promises a click that does nothing. */
+.service-card:has(a):hover {
   transform: translateY(-3px);
   border-color: var(--sage);
   box-shadow: 0 12px 30px rgba(34, 40, 39, 0.08);
@@ -943,7 +945,7 @@ p { max-width: 66ch; text-wrap: pretty; }
   filter: saturate(0.88) contrast(1.02);
   transition: transform 600ms var(--ease-out-quart), filter var(--dur-layout) var(--ease-out-quart);
 }
-.service-card:hover .service-media img {
+.service-card:has(a):hover .service-media img {
   transform: scale(1.04);
   filter: saturate(1) contrast(1.02);
 }
@@ -977,9 +979,91 @@ p { max-width: 66ch; text-wrap: pretty; }
   border-radius: 50%;
   background: var(--sage);
 }
+/* ---------- index layout ----------
+   Nine same-size cards made a long wall of stock photography. As an index,
+   each category is one ruled row: a small photograph, the name, then what it
+   covers as running text, so the whole range can be scanned in one screen. */
+.service-grid--index {
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(34, 40, 39, 0.14);
+}
+.service-grid--index .service-card {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+  padding-block: clamp(1.4rem, 2.5vw, 1.9rem);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(34, 40, 39, 0.14);
+  border-radius: 0;
+  overflow: visible;
+}
+.service-grid--index .service-card:not(:has(.service-media)) { grid-template-columns: 1fr; }
+.service-grid--index .service-card:has(a):hover {
+  transform: none;
+  box-shadow: none;
+  border-color: rgba(34, 40, 39, 0.14);
+}
+.service-grid--index .service-media {
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+}
+.service-grid--index .service-body {
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 0.6rem clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+.service-grid--index .service-body h3 {
+  grid-column: 1;
+  font-size: var(--text-xl);
+  line-height: 1.2;
+}
+.service-grid--index .service-body > p {
+  grid-column: 1;
+  font-size: var(--text-base);
+}
+.service-grid--index .service-list {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  display: block;
+  padding-top: 0.3rem;
+}
+.service-grid--index .service-list li {
+  display: inline;
+  padding-left: 0;
+  font-size: var(--text-base);
+  color: var(--gray);
+}
+.service-grid--index .service-list li::before { content: none; }
+.service-grid--index .service-list li:not(:last-child)::after {
+  content: "\00B7";
+  margin-inline: 0.55rem;
+  color: var(--sage-ink);
+}
+.service-grid--index .service-body .arrow-link {
+  grid-column: 1;
+  margin-top: 0;
+  align-self: start;
+}
+@media (min-width: 761px) {
+  /* Keep each treatment name whole; only the gaps between them may wrap. */
+  .service-grid--index .service-list li { white-space: nowrap; }
+}
+@media (max-width: 760px) {
+  .service-grid--index .service-card { grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1rem; }
+  .service-grid--index .service-body { grid-template-columns: 1fr; }
+  .service-grid--index .service-list { grid-column: 1; grid-row: auto; padding-top: 0; }
+  .service-grid--index .service-body h3 { font-size: var(--text-lg); }
+  .service-grid--index .service-list li { font-size: var(--text-sm); }
+}
+
 .services-cta {
   max-width: none;
-  text-align: center;
+  text-align: left;
   margin-top: clamp(2rem, 4vw, 3rem);
   font-size: var(--text-md);
   color: var(--ink);
@@ -989,40 +1073,65 @@ p { max-width: 66ch; text-wrap: pretty; }
    Features + interior
    ========================================================================== */
 .features { padding-block: var(--space-section); }
+/* A ruled list, not an icon grid: each fact is a serif term over its line of
+   explanation, separated by hairlines like entries in a notebook. */
 .feature-list {
+  margin: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.25rem 2rem;
+  border-top: 1px solid var(--line);
 }
-.feature svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--sage-ink);
-  margin-bottom: 0.7rem;
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 0.35rem 2rem;
+  align-content: start;
+  padding-block: 1.35rem;
+  border-bottom: 1px solid var(--line);
 }
-.feature h3 {
+.feature dt {
+  font-family: var(--font-display);
   font-size: var(--text-lg);
-  margin-bottom: 0.35rem;
+  line-height: 1.3;
+  color: var(--ink);
 }
-.feature p { font-size: var(--text-base); }
+.feature dd { margin: 0; font-size: var(--text-base); }
 @media (max-width: 560px) {
-  .feature-list { grid-template-columns: 1fr; }
+  .feature { grid-template-columns: 1fr; }
+}
+/* Full-width variant (treatments hub): two columns of entries. */
+.feature-list--wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(2rem, 5vw, 4rem);
+  border-top: 0;
+}
+.feature-list--wide .feature {
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+}
+@media (max-width: 760px) {
+  .feature-list--wide { grid-template-columns: 1fr; }
+}
+.features .split-media img { aspect-ratio: 4 / 5; }
+.features-copy h2 { margin-bottom: clamp(1.75rem, 4vw, 2.5rem); }
+@media (max-width: 860px) {
+  .features .split-media img { aspect-ratio: 4 / 3; }
 }
 
 /* ==========================================================================
    Patient stories
    ========================================================================== */
 .stories { padding-block: var(--space-section); }
+/* Reviews as three columns of type under a rule, not three white boxes. */
 .story-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-  gap: 1.25rem;
+  gap: 2.5rem clamp(2rem, 4vw, 3.5rem);
 }
 .story-card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.75rem 1.6rem;
+  position: relative;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(34, 40, 39, 0.2);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -1033,12 +1142,12 @@ p { max-width: 66ch; text-wrap: pretty; }
   color: var(--sage-ink);
 }
 .stars svg { width: 0.95rem; height: 0.95rem; }
-/* Reviews are set upright in the body sans, not italic: Hanken Grotesk has no
-   italic loaded (it would synthesise a slanted faux-italic), and long passages
-   read better upright. The quotation marks already mark it as a quote. */
+/* Reviews are set upright in the serif: long passages read better upright,
+   and the quotation marks already mark it as a quote. */
 .story-card blockquote {
-  font-size: var(--text-base);
-  line-height: 1.6;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  line-height: 1.55;
   color: var(--ink);
   flex-grow: 1;
   text-wrap: pretty;
@@ -1057,7 +1166,7 @@ p { max-width: 66ch; text-wrap: pretty; }
 
 .stories-cta {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: clamp(2rem, 4vw, 2.75rem);
 }
 .btn-google {
@@ -1105,12 +1214,6 @@ p { max-width: 66ch; text-wrap: pretty; }
   font-weight: 500;
   color: #fff;
   background: linear-gradient(to top, rgba(34, 40, 39, 0.78), transparent);
-  transition: padding-bottom var(--dur-layout) var(--ease-out-quart),
-              background var(--dur-layout) var(--ease-out-quart);
-}
-.gallery-item:hover figcaption {
-  padding-bottom: 1.1rem;
-  background: linear-gradient(to top, rgba(34, 40, 39, 0.9), transparent);
 }
 @media (max-width: 860px) {
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1160,6 +1263,18 @@ p { max-width: 66ch; text-wrap: pretty; }
   align-items: center;
   min-height: 44px;
 }
+/* The phone number is the fastest route to a human, so it is set as display
+   type rather than as one more underlined link. */
+.contact-rows a[href^="tel:"] {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--sage);
+  min-height: 0;
+  padding-block: 0.2rem;
+}
+.contact-rows a[href^="tel:"]:hover { border-bottom-color: var(--ink); }
 
 .map-wrap {
   margin-top: 2.25rem;
@@ -1245,15 +1360,30 @@ p { max-width: 66ch; text-wrap: pretty; }
 }
 @media (max-width: 860px) {
   .contact-grid { grid-template-columns: 1fr; }
+  /* On one column the booking form comes straight after the contact rows,
+     and the map drops to the end: the form is the conversion, the map is
+     reference. */
+  .contact-grid { row-gap: 0; }
+  .contact-copy { display: contents; }
+  .appointment-card { order: 1; margin-top: 2.5rem; }
+  .map-wrap { order: 2; margin-top: 1.5rem; }
 }
 
 /* ==========================================================================
    Footer
    ========================================================================== */
+/* Dark green footer: closes the page on the same colour as the statement
+   band, so the page ends rather than fading out on another beige. */
 .site-footer {
-  background: var(--beige-deep);
-  padding: 2.75rem 0;
+  background: var(--dark);
+  padding: clamp(3rem, 6vw, 4.5rem) 0 2.75rem;
+  color: rgba(255, 255, 255, 0.72);
 }
+.site-footer .footer-brand { color: var(--white); }
+.site-footer .footer-fine { color: rgba(255, 255, 255, 0.72); }
+.site-footer .footer-col a { color: rgba(255, 255, 255, 0.78); }
+.site-footer .footer-col a:hover { color: var(--white); }
+.site-footer :focus-visible { outline-color: var(--sage); }
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr repeat(3, 1fr);
@@ -1288,7 +1418,8 @@ p { max-width: 66ch; text-wrap: pretty; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 700px) {
-  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
+  .footer-grid > :first-child { grid-column: 1 / -1; }
 }
 
 /* ==========================================================================
@@ -1360,22 +1491,6 @@ p { max-width: 66ch; text-wrap: pretty; }
   body.js [data-reveal="panel"].in {
     animation: rv-panel var(--dur-enter) var(--ease-out-expo) both;
   }
-
-  /* Section headings wipe in from the top as their block reveals: a restrained
-     counterpart to the hero's lift, applied only to h2s. */
-  body.js [data-reveal].in h2 {
-    animation: rv-head 800ms var(--ease-out-expo) both;
-  }
-
-  /* The five stars tick in one after another once a review card lands. */
-  body.js [data-reveal="item"].in .stars svg {
-    animation: star-in 380ms var(--ease-out-quart) both;
-  }
-  .stars svg:nth-child(1) { animation-delay: 260ms; }
-  .stars svg:nth-child(2) { animation-delay: 315ms; }
-  .stars svg:nth-child(3) { animation-delay: 370ms; }
-  .stars svg:nth-child(4) { animation-delay: 425ms; }
-  .stars svg:nth-child(5) { animation-delay: 480ms; }
 }
 
 @keyframes rv-fade  { from { opacity: 0; }                                              to { opacity: 1; } }
@@ -1383,9 +1498,6 @@ p { max-width: 66ch; text-wrap: pretty; }
 @keyframes rv-panel { from { opacity: 0; transform: translateY(18px) scale(0.99); }     to { opacity: 1; transform: none; } }
 @keyframes rv-media { from { opacity: 0; clip-path: inset(14% 0 0 0); transform: scale(1.03); }
                       to   { opacity: 1; clip-path: inset(0 0 0 0);  transform: none; } }
-@keyframes rv-head  { from { clip-path: inset(-0.12em -0.12em 105% -0.12em); }
-                      to   { clip-path: inset(-0.12em -0.12em -0.12em -0.12em); } }
-@keyframes star-in  { from { opacity: 0; transform: scale(0.4); }                        to { opacity: 1; transform: none; } }
 
 /* ==========================================================================
    Hero entrance — the one rehearsed moment on the page
@@ -1449,15 +1561,10 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
   .btn:hover, .btn:active, .fab:hover, .service-card:hover,
   .gallery-item:hover img { transform: none; }
 
-  /* Timeline: the connector fills instantly and the cards do not lift.
-     (journey-in and icon-pulse are already off, being no-preference only.) */
-  .journey-line-fill { transition: none; }
-  .journey-card:hover { transform: none; }
-
-  /* Statement words are static and unblurred; FAQ opens instantly; the
-     progress bar still fills (it is information, not decoration) but the
-     hero parallax is cancelled in JS. */
-  body.js .statement-text .word { animation: none; opacity: 1; transform: none; filter: none; }
+  /* Rails are drawn in full and every step reads as reached (script.js skips
+     the scrub); statement words sit fully inked (the scrub rule lives inside
+     no-preference); FAQ opens instantly; hero parallax is cancelled in JS. */
+  .journey-no, .journey-step p, .steps[data-rail] .step-no { transition: none; }
   .faq-answer { transition: none; }
   .faq-mark::before, .faq-mark::after { transition: none; }
 }
@@ -1523,13 +1630,10 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
   font-size: var(--text-md);
   max-width: 46ch;
 }
-.page-hero .pill {
-  background: transparent;
-  color: var(--sage);
-  padding: 0;
-  margin-bottom: 0;
-  letter-spacing: 0.18em;
-}
+/* The breadcrumb already says where you are; a second tracked label under it
+   repeated the same word. */
+.page-hero .pill { display: none; }
+.page-hero .breadcrumb { margin-bottom: 1.25rem; }
 .page-hero .hero-actions { margin-top: 1.9rem; }
 
 /* ---------- breadcrumb ---------- */
@@ -1724,7 +1828,7 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
   color: rgba(255, 255, 255, 0.78);
   padding-block: var(--space-section);
 }
-.steps-band h2 { color: var(--white); }
+.steps-band h2 { color: var(--white); margin-bottom: 1rem; }
 .steps-band .steps-intro { color: rgba(255, 255, 255, 0.74); }
 .steps-rule {
   display: block;
@@ -1794,7 +1898,6 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
 .note-card {
   background: var(--white);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--sage);
   border-radius: var(--radius);
   padding: clamp(1.3rem, 3vw, 1.75rem);
 }
@@ -1884,7 +1987,17 @@ body.js .hero-title .line:nth-child(2) > span { animation-delay: 300ms; }
 /* Hub page: the four detailed treatments read better as a 2x2 of larger cards
    than as a row of three with a lone fourth underneath. */
 .service-grid--feature { grid-template-columns: repeat(2, 1fr); }
+/* Photo beside the text rather than above it, so the four guides read as a
+   compact 2x2 instead of four poster-sized cards. */
+@media (min-width: 900px) {
+  .service-grid--feature .service-card { flex-direction: row; }
+  .service-grid--feature .service-media { flex: 0 0 42%; aspect-ratio: auto; min-height: 15rem; }
+}
 @media (max-width: 560px) { .service-grid--feature { grid-template-columns: 1fr; } }
+
+/* .services sets the grey surface after .band-beige is declared, so a
+   services band that asks for beige has to say so explicitly. */
+.services.band-beige { background: var(--beige); }
 
 /* Quiet alternate surface, so a section does not merge into the beige CTA
    band that follows it. Same value the home page uses behind the services. */

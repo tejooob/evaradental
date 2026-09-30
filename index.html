@@ -58,10 +58,6 @@
 
   <a class="skip-link" href="#home">Skip to content</a>
 
-  <!-- Reading progress. Decorative: the same information is available from the
-       scrollbar, so it is hidden from assistive tech. -->
-  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgressBar"></span></div>
-
   <!-- ======================= NAVIGATION ======================= -->
   <header class="site-header" id="siteHeader">
     <nav class="nav" aria-label="Main">
@@ -128,7 +124,6 @@
           </picture>
         </div>
         <div class="split-copy">
-          <span class="pill">Our Philosophy</span>
           <h2>Gentle hands, honest advice.</h2>
           <p>At Evara Dental Clinic, we believe dentistry should never feel clinical or intimidating. The clinic is built to feel calm: warm light, quiet rooms, and unhurried appointments that start with a conversation rather than a chair.</p>
           <p>You see your own X-ray, hear the options in plain language, and get the cost in writing before anything begins. No upselling, no procedures you did not agree to.</p>
@@ -140,85 +135,45 @@
       </div>
     </section>
 
-    <!-- ======================= SMILE JOURNEY ======================= -->
-    <!-- Five-step timeline. Cards are fully visible by default; the entrance
-         and the connector fill are progressive enhancements driven by an
-         IntersectionObserver in script.js (see the "journey" module). -->
+    <!-- ======================= A VISIT, STEP BY STEP ======================= -->
+    <!-- Five steps on one rail. The rail draws itself as the visitor scrolls
+         through the section (script.js "journey"), so reading down the page
+         and moving through the visit are the same gesture. Every step is fully
+         visible without JS; the unreached styling only exists under body.js. -->
     <section class="journey" id="journey" aria-labelledby="journeyTitle">
-      <!-- Soft blurred circles for depth (purely decorative). -->
-      <div class="journey-bg" aria-hidden="true">
-        <span class="journey-orb journey-orb--a"></span>
-        <span class="journey-orb journey-orb--b"></span>
-      </div>
-
       <div class="container">
         <div class="section-head">
-          <h2 id="journeyTitle">Your smile journey, step by step</h2>
-          <p>From the first hello to your follow-up visit, here is exactly what to expect at Evara.</p>
+          <h2 id="journeyTitle">What happens when you visit</h2>
+          <p>From the first conversation to the follow-up, in the order it happens.</p>
         </div>
 
-        <div class="journey-track">
-          <!-- Connector: a faint rail with a gradient fill that JS grows as
-               each step scrolls into view. Decorative, so aria-hidden. -->
-          <div class="journey-line" aria-hidden="true"><span class="journey-line-fill"></span></div>
-
-          <ol class="journey-steps">
-            <li class="journey-step" style="--i: 0">
-              <span class="journey-badge">1</span>
-              <div class="journey-card">
-                <span class="journey-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v14H4zM4 10h16M8 3v4m8-4v4"/></svg>
-                </span>
-                <h3>Consultation</h3>
-                <p>Meet with our dentist and discuss your smile goals.</p>
-              </div>
-            </li>
-
-            <li class="journey-step" style="--i: 1">
-              <span class="journey-badge">2</span>
-              <div class="journey-card">
-                <span class="journey-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 8V5a1 1 0 0 1 1-1h3m8 0h3a1 1 0 0 1 1 1v3m0 8v3a1 1 0 0 1-1 1h-3m-8 0H5a1 1 0 0 1-1-1v-3M4 12h16"/></svg>
-                </span>
-                <h3>Digital Scan</h3>
-                <p>We create an accurate 3D scan of your teeth.</p>
-              </div>
-            </li>
-
-            <li class="journey-step" style="--i: 2">
-              <span class="journey-badge">3</span>
-              <div class="journey-card">
-                <span class="journey-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 3C8.5 3 6 5.4 6 8.8c0 2.4 1 3.8 1.5 5.6.5 1.9.7 5.6 2.2 5.6 1.4 0 1-3 2.3-3s.9 3 2.3 3c1.5 0 1.7-3.7 2.2-5.6C17 12.6 18 11.2 18 8.8 18 5.4 15.5 3 12 3z"/></svg>
-                </span>
-                <h3>Treatment</h3>
-                <p>Advanced, gentle treatment performed by experienced dentists.</p>
-              </div>
-            </li>
-
-            <li class="journey-step" style="--i: 3">
-              <span class="journey-badge">4</span>
-              <div class="journey-card">
-                <span class="journey-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 3l1.7 4.8L18.5 9l-4.8 1.7L12 15l-1.7-4.3L5.5 9l4.8-1.2zM18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z"/></svg>
-                </span>
-                <h3>Smile Transformation</h3>
-                <p>Enjoy your new healthy and confident smile.</p>
-              </div>
-            </li>
-
-            <li class="journey-step" style="--i: 4">
-              <span class="journey-badge">5</span>
-              <div class="journey-card">
-                <span class="journey-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6zM9 12l2 2 4-4"/></svg>
-                </span>
-                <h3>Follow-up Care</h3>
-                <p>Regular reviews keep your smile healthy.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
+        <ol class="journey-steps" data-rail>
+          <li class="journey-step">
+            <span class="journey-no" aria-hidden="true">1</span>
+            <h3>A conversation first</h3>
+            <p>You tell Dr. Pervi what is bothering you before you sit in the chair.</p>
+          </li>
+          <li class="journey-step">
+            <span class="journey-no" aria-hidden="true">2</span>
+            <h3>Examination and X-ray</h3>
+            <p>A digital X-ray or 3D scan, and you look at it on screen together.</p>
+          </li>
+          <li class="journey-step">
+            <span class="journey-no" aria-hidden="true">3</span>
+            <h3>Options, in writing</h3>
+            <p>What is necessary, what is optional, and the cost of each.</p>
+          </li>
+          <li class="journey-step">
+            <span class="journey-no" aria-hidden="true">4</span>
+            <h3>Treatment, when you agree</h3>
+            <p>Nothing starts until you say yes. Raise your hand and she stops.</p>
+          </li>
+          <li class="journey-step">
+            <span class="journey-no" aria-hidden="true">5</span>
+            <h3>Follow-up</h3>
+            <p>A review visit, then a check-up every six months.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -241,15 +196,17 @@
                <img id="doctorPhoto" src="images/dr-kshitija.jpg" alt="Dr. Kshitija P Pervi"> -->
           <div class="dentist-portrait no-photo" id="doctorPortrait">
             <img id="doctorPhoto" alt="Dr. Kshitija P Pervi">
+            <!-- Until a photograph exists, a nameplate: the kind of engraved
+                 plaque found beside a clinic door, not an empty avatar. -->
             <div class="dentist-monogram" aria-hidden="true">
-              <svg viewBox="0 0 32 32">
-                <path d="M16 3C11 3 7 6.5 7 11.5c0 3.5 1.5 5.5 2.2 8.2.7 2.7 1 8.3 3.3 8.3 2 0 1.4-4.5 3.5-4.5s1.5 4.5 3.5 4.5c2.3 0 2.6-5.6 3.3-8.3.7-2.7 2.2-4.7 2.2-8.2C25 6.5 21 3 16 3z" fill="none" stroke="currentColor" stroke-width="1.4"/>
-              </svg>
-              <span>Dr. K</span>
+              <span class="monogram-initials">KP</span>
+              <span class="monogram-rule"></span>
+              <span class="monogram-name">Dr. Kshitija P Pervi</span>
+              <span class="monogram-meta">B.D.S (MUHS) &middot; Reg No. A-44613</span>
             </div>
           </div>
           <div class="dentist-copy">
-            <span class="pill">Lead Dentist</span>
+            <span class="kicker">Lead dentist</span>
             <h2>Dr. Kshitija P Pervi</h2>
             <p class="dentist-quote">&ldquo;Patients take the best care of smiles they truly understand.&rdquo;</p>
             <p class="dentist-bio">With over seven years in clinical practice, Dr. Pervi treats every case herself, from a child's first check-up to full-mouth rehabilitation, and refers honestly when a specialist would serve you better. Consultations are unhurried, and she runs free dental camps around Kharghar through the year.</p>
@@ -287,7 +244,7 @@
           <h2>Services we provide</h2>
           <p>Everyday dentistry and specialist work, all under one roof in Kharghar.</p>
         </div>
-        <div class="service-grid">
+        <div class="service-grid service-grid--index">
 
           <article class="service-card">
             <div class="service-media">
@@ -498,27 +455,28 @@
     <!-- ======================= FEATURES + INTERIOR ======================= -->
     <section class="features">
       <div class="container split-grid features-grid">
-        <div class="feature-list">
+        <!-- Four facts about the practice, set as a ruled list beside the
+             sterilisation photo rather than as an icon grid. -->
+        <div class="features-copy">
+        <h2>How the practice runs</h2>
+        <dl class="feature-list">
           <div class="feature">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9 3h6l1 4 3.5 2-1 5.5L15 18l-1 3H10l-1-3-3.5-3.5L4.5 9 8 7z"/></svg>
-            <h3>Advanced Tech</h3>
-            <p>Digital X-rays, rotary endodontics and state-of-the-art imaging for minimally invasive, precise treatment.</p>
+            <dt>Modern equipment</dt>
+            <dd>Digital X-rays, 3D oral scanning and rotary endodontics, which make treatment shorter and more precise.</dd>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 21C7 16.5 4 13.3 4 9.8 4 7.2 6 5 8.5 5c1.4 0 2.7.7 3.5 1.8C12.8 5.7 14.1 5 15.5 5 18 5 20 7.2 20 9.8c0 3.5-3 6.7-8 11.2z"/></svg>
-            <h3>Gentle Care</h3>
-            <p>Quiet rooms, gentle technique and modern anaesthesia, so nervous patients can sit through treatment in comfort.</p>
+            <dt>Gentle with nervous patients</dt>
+            <dd>Quiet rooms, gentle technique and modern anaesthesia, so nervous patients can sit through treatment in comfort.</dd>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M16 11a4 4 0 1 0-8 0m8 0a4 4 0 0 1-8 0m8 0c2.8.6 5 2 5 4v3H3v-3c0-2 2.2-3.4 5-4"/></svg>
-            <h3>Personal Doctor</h3>
-            <p>The same doctor from diagnosis to follow-up. Dr. Pervi personally handles every case, start to finish.</p>
+            <dt>One doctor, start to finish</dt>
+            <dd>The same doctor from diagnosis to follow-up. Dr. Pervi personally handles every case.</dd>
           </div>
           <div class="feature">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 7v5l3 3"/></svg>
-            <h3>Flexible Hours</h3>
-            <p>Morning and evening slots six days a week, Sunday by appointment, and same-day care for emergencies.</p>
+            <dt>Morning and evening slots</dt>
+            <dd>Six days a week, Sunday by appointment, and same-day care for emergencies.</dd>
           </div>
+        </dl>
         </div>
         <div class="split-media">
           <picture>
@@ -633,7 +591,7 @@
     <!-- Native <details>/<summary> for real keyboard and screen-reader support;
          the open/close is animated with grid-template-rows, never height. -->
     <section class="faq band-beige" id="faq">
-      <div class="container">
+      <div class="container faq-layout">
         <div class="section-head">
           <h2>Questions patients ask us</h2>
           <p>If your question is not here, call or WhatsApp us on 74001&nbsp;77989 and we will answer it honestly.</p>

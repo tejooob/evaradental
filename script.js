@@ -128,35 +128,91 @@ safely('scrollspy', () => {
   sections.forEach((s) => spy.observe(s));
 });
 
-/* ---------- reading progress + hero parallax ----------
-   Both are driven from one rAF-throttled scroll listener so we never do layout
-   work twice per frame, and both write only transform-driving custom props. */
+/* ---------- scroll-linked motion ----------
+   Three things follow the scroll position itself rather than firing once:
+   the hero video drifts (depth), the doctor's statement inks in word by word
+   (reading it), and the step rails draw down each process (moving through the
+   visit). One rAF-throttled listener drives all of them, and each writes only
+   transforms or custom properties that feed transform/opacity. */
 safely('scroll-fx', () => {
-  const bar = document.getElementById('scrollProgressBar');
-  const heroBg = document.querySelector('.hero-bg');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (!bar && !heroBg) return;
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
+  // Hero parallax.
+  const heroBg = document.querySelector('.hero-bg');
+
+  // Statement: wrap each word so CSS can ink them in reading order. The text
+  // reads the same to assistive tech; the wrapping is presentational.
+  const statement = document.querySelector('[data-split]');
+  if (statement) {
+    const words = statement.textContent.trim().split(/\s+/);
+    statement.textContent = '';
+    words.forEach((word, i) => {
+      const span = document.createElement('span');
+      span.className = 'word';
+      span.style.setProperty('--w', i);
+      span.textContent = word;
+      statement.append(span, document.createTextNode(' '));
+    });
+    statement.style.setProperty('--n', words.length);
+    statement.dataset.scrub = '';
+  }
+
+  // Rails: each step owns one segment and gets --f (0 to 1). A horizontal row
+  // of steps shares one reading position, so it is scrubbed as a whole; a
+  // vertical list fills each segment as that step passes the reading line.
+  const rails = [...document.querySelectorAll('[data-rail]')].map((list) => ({
+    list,
+    steps: [...list.children],
+  }));
+
+  if (!heroBg && !statement && !rails.length) return;
+
+  const setRail = ({ list, steps }, vh) => {
+    if (reduce.matches) {
+      steps.forEach((s) => { s.style.setProperty('--f', 1); s.classList.add('is-reached'); });
+      return;
+    }
+    const line = vh * 0.62;                       // where the eye rests while reading
+    const horizontal = steps.length > 1 && steps[0].offsetTop === steps[1].offsetTop;
+    let fills;
+    if (horizontal) {
+      // Starts as the row comes up the screen and finishes by the time it is
+      // in the upper third, where it is actually being read.
+      const r = list.getBoundingClientRect();
+      const p = clamp01((vh * 0.88 - r.top) / (vh * 0.5));
+      fills = steps.map((_, i) => clamp01(p * steps.length - i));
+    } else {
+      fills = steps.map((s) => {
+        const r = s.getBoundingClientRect();
+        return clamp01((line - r.top) / Math.max(r.height, 1));
+      });
+    }
+    steps.forEach((s, i) => {
+      s.style.setProperty('--f', fills[i].toFixed(3));
+      s.classList.toggle('is-reached', fills[i] > 0);
+    });
+  };
 
   let ticking = false;
-
   const update = () => {
     ticking = false;
-    const doc = document.documentElement;
+    const vh = window.innerHeight;
 
-    if (bar) {
-      const scrollable = doc.scrollHeight - window.innerHeight;
-      const p = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
-      bar.style.setProperty('--sp', p.toFixed(4));
-    }
-
-    // Video drifts slower than the page, which reads as depth. Skipped for
-    // reduced motion, and only while the hero is actually on screen.
+    // Video drifts slower than the page, only while the hero is on screen.
     if (heroBg && !reduce.matches) {
       const y = window.scrollY;
-      heroBg.style.transform = y < window.innerHeight
-        ? `translate3d(0, ${(y * 0.18).toFixed(1)}px, 0)`
-        : '';
+      heroBg.style.transform = y < vh ? `translate3d(0, ${(y * 0.18).toFixed(1)}px, 0)` : '';
     }
+
+    // Fully inked by the time the line reaches the upper third of the screen.
+    if (statement) {
+      const r = statement.getBoundingClientRect();
+      const p = clamp01((vh * 0.9 - r.top) / (vh * 0.55));
+      statement.style.setProperty('--sp', p.toFixed(4));
+    }
+
+    rails.forEach((rail) => setRail(rail, vh));
   };
 
   const onScroll = () => {
@@ -174,33 +230,6 @@ safely('scroll-fx', () => {
   });
 });
 
-/* ---------- statement: split into words, then stagger on reveal ----------
-   The text is already visible; this only wraps each word so CSS can stagger
-   them, and adds `.in` when the line scrolls into view. */
-safely('statement', () => {
-  const el = document.querySelector('[data-split]');
-  if (!el || !('IntersectionObserver' in window)) return;
-
-  const words = el.textContent.trim().split(/\s+/);
-  el.textContent = '';
-  words.forEach((word, i) => {
-    const span = document.createElement('span');
-    span.className = 'word';
-    span.style.setProperty('--w', i);
-    span.textContent = word;
-    el.append(span, document.createTextNode(' '));
-  });
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('in');
-      io.unobserve(entry.target);
-    });
-  }, { threshold: 0.35 });
-  io.observe(el);
-});
-
 /* ---------- FAQ: only one answer open at a time ---------- */
 safely('faq', () => {
   const items = [...document.querySelectorAll('.faq-item')];
@@ -211,39 +240,6 @@ safely('faq', () => {
       items.forEach((other) => { if (other !== item) other.open = false; });
     });
   });
-});
-
-/* ---------- Smile Journey timeline ----------
-   Reveals each step once as it enters the viewport (staggered via CSS --i)
-   and grows the connector fill from 0 to 1 as steps appear. Cards are visible
-   by default, so if the observer never runs the section still reads fine. */
-safely('journey', () => {
-  const track = document.querySelector('.journey-track');
-  if (!track) return;
-  const steps = [...track.querySelectorAll('.journey-step')];
-  if (!steps.length) return;
-
-  const total = steps.length;
-  let revealed = 0;
-
-  // No observer support: show everything and fill the rail.
-  if (!('IntersectionObserver' in window)) {
-    steps.forEach((s) => s.classList.add('in'));
-    track.style.setProperty('--p', '1');
-    return;
-  }
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('in');
-      io.unobserve(entry.target);            // play once
-      revealed += 1;
-      track.style.setProperty('--p', (revealed / total).toFixed(3));
-    });
-  }, { threshold: 0.4 });
-
-  steps.forEach((s) => io.observe(s));
 });
 
 /* ---------- hero video ----------
