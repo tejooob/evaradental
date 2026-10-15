@@ -1,0 +1,18 @@
+# Evara Dental Clinic
+
+> Family dental clinic in Sector 18, Kharghar, Navi Mumbai, Maharashtra, India. Run by Dr. Kshitija P Pervi, B.D.S (MUHS), Reg No. A-44613, who treats every patient personally. Appointments by phone or WhatsApp: +91 74001 77989. The site states no prices; a written quote is given after examination.
+
+## Pages
+- [Home](https://www.evaradental.in/): clinic overview, about the dentist, testimonials, gallery, FAQ, contact and booking.
+- [Treatments](https://www.evaradental.in/services/): all treatments offered, with links to detailed guides.
+- [Teeth cleaning](https://www.evaradental.in/services/teeth-cleaning.html): scaling and polishing, aftercare, how often to repeat.
+- [Teeth filling](https://www.evaradental.in/services/teeth-filling.html): tooth-coloured composite fillings, longevity, sensitivity.
+- [Root canal treatment](https://www.evaradental.in/services/root-canal-treatment.html): what an RCT involves, visits, crown afterwards.
+- [Dental implants](https://www.evaradental.in/services/dental-implants.html): who is suitable, timeline, aftercare, vs bridge or denture.
+
+## Facts
+- Name: Evara Dental Clinic
+- Address: Shop No. 07, Sector 18, Kharghar, Navi Mumbai 410210, India
+- Phone / WhatsApp: +91 74001 77989
+- Instagram: https://www.instagram.com/evara_dental_clinic
+- Other treatments offered: gum care, extractions, braces and orthodontics, dentures, emergency care, children's dentistry.
