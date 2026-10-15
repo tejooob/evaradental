@@ -17,8 +17,8 @@ Marketing site for Evara Dental Clinic, run by Dr. Kshitija P Pervi, B.D.S (MUHS
 `index.html` is the main page and carries every conversion path. Under it sits a
 second page type built for search:
 
-- `services/index.html` — the treatments hub. Links to the four detailed pages, then lists the six categories that do not have one.
-- `services/teeth-cleaning.html`, `teeth-filling.html`, `root-canal-treatment.html`, `dental-implants.html` — one long-form page per treatment: what it is, symptoms, a numbered account of the appointment, aftercare, what changes the cost, and an FAQ.
+- `services/` — the treatments hub. Links to the four detailed pages, then lists the six categories that do not have one.
+- `services/teeth-cleaning/`, `teeth-filling/`, `root-canal-treatment/`, `dental-implants/` (each a folder with an `index.html`, so URLs end in a trailing slash) — one long-form page per treatment: what it is, symptoms, a numbered account of the appointment, aftercare, what changes the cost, and an FAQ.
 
 Each treatment page carries `MedicalWebPage` + `MedicalProcedure`, `BreadcrumbList`
 and `FAQPage` JSON-LD; the home page and the hub carry `Dentist`. The pages state
